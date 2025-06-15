@@ -1,4 +1,4 @@
-package ru.outofmemoryguru.calculator.dto;
+package ru.outofmemoryguru.calculator.controller.dto;
 
 import lombok.Data;
 
@@ -13,6 +13,7 @@ public class LoanOfferDto {
     private Integer term;
     private BigDecimal monthlyPayment;
     private BigDecimal rate;
-    private Boolean isInsuranceEnabled;
-    private Boolean isSalaryClient;
+
+    private boolean insuranceEnabled;
+    private boolean salaryClient;
 }

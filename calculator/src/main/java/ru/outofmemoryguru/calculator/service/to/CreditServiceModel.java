@@ -1,4 +1,4 @@
-package ru.outofmemoryguru.calculator.dto;
+package ru.outofmemoryguru.calculator.service.to;
 
 import lombok.Data;
 
@@ -6,15 +6,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class CreditDto {
-
+public class CreditServiceModel {
     private BigDecimal amount;
     private Integer term;
     private BigDecimal monthlyPayment;
     private BigDecimal rate;
     private BigDecimal psk;
-    private Boolean isInsuranceEnabled;
-    private Boolean isSalaryClient;
-    private List<PaymentScheduleElementDto> paymentSchedule;
-
+    private boolean insuranceEnabled;
+    private boolean salaryClient;
+    private List<PaymentScheduleElementServiceModel> paymentSchedule;
 }

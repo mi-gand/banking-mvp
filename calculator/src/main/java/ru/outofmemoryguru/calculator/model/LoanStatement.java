@@ -1,7 +1,7 @@
 package ru.outofmemoryguru.calculator.model;
 
 import lombok.Data;
-import ru.outofmemoryguru.calculator.dto.LoanOfferDto;
+import ru.outofmemoryguru.calculator.controller.dto.LoanOfferDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

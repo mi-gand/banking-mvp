@@ -1,4 +1,4 @@
-package ru.outofmemoryguru.calculator.util;
+package ru.outofmemoryguru.calculator.model;
 
 public enum Position {
     WORKER,

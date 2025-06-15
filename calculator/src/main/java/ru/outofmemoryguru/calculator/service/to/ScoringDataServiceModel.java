@@ -1,14 +1,15 @@
-package ru.outofmemoryguru.calculator.dto;
+package ru.outofmemoryguru.calculator.service.to;
 
 import lombok.Data;
-import ru.outofmemoryguru.calculator.util.Gender;
-import ru.outofmemoryguru.calculator.util.MaritalStatus;
+import ru.outofmemoryguru.calculator.controller.dto.EmploymentDto;
+import ru.outofmemoryguru.calculator.model.Gender;
+import ru.outofmemoryguru.calculator.model.MaritalStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class ScoringDataDto {
+public class ScoringDataServiceModel {
     private BigDecimal amount;
     private Integer term;
     private String firstName;
@@ -24,6 +25,6 @@ public class ScoringDataDto {
     private Integer dependentAmount;
     private EmploymentDto employment;
     private String accountNumber;
-    private Boolean isInsuranceEnabled;
-    private Boolean isSalaryClient;
+    private boolean isInsuranceEnabled;
+    private boolean isSalaryClient;
 }

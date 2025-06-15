@@ -1,10 +1,8 @@
-package ru.outofmemoryguru.calculator.util;
+package ru.outofmemoryguru.calculator.model;
 
 public enum EmploymentStatus {
-    EMPLOYED,
     SELF_EMPLOYED,
     UNEMPLOYED,
     BUSINESS_OWNER,
-    RETIRED,
-    STUDENT
+
 }
