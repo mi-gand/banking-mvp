@@ -1,0 +1,33 @@
+#перенес с application.properties
+spring:
+  application:
+    name:  calculator
+
+loan:
+  offer:
+    base-rate: 30.0
+    insurance-discount: 3.0
+    salary-client-discount: 1.0
+    insurance-cost: 100000
+
+server:
+  port: 8080
+
+#http://localhost:8080/swagger-ui/index.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+
+logbook:
+  obfuscate:
+    headers:
+      - Authorization
+      - X-Secret
+
+
