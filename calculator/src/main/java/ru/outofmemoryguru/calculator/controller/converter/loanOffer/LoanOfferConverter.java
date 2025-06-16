@@ -2,17 +2,17 @@ package ru.outofmemoryguru.calculator.controller.converter.loanOffer;
 
 import org.springframework.stereotype.Component;
 import ru.outofmemoryguru.calculator.controller.converter.Converter;
-import ru.outofmemoryguru.calculator.controller.dto.LoanOfferDto;
+import ru.outofmemoryguru.calculator.controller.dto.LoanOfferModelService;
 import ru.outofmemoryguru.calculator.service.to.LoanOfferServiceModel;
 
 @Component
-public class LoanOfferConverter implements Converter <LoanOfferDto, LoanOfferServiceModel> {
+public class LoanOfferConverter implements Converter<LoanOfferModelService, LoanOfferServiceModel> {
     @Override
-    public LoanOfferDto convertToDto(LoanOfferServiceModel source) {
+    public LoanOfferModelService convertToDto(LoanOfferServiceModel source) {
         if (source == null) {
             return null;
         }
-        LoanOfferDto dto = new LoanOfferDto();
+        LoanOfferModelService dto = new LoanOfferModelService();
         dto.setInsuranceEnabled(source.isInsuranceEnabled());
         dto.setMonthlyPayment(source.getMonthlyPayment());
         dto.setRate(source.getRate());
@@ -25,7 +25,7 @@ public class LoanOfferConverter implements Converter <LoanOfferDto, LoanOfferSer
     }
 
     @Override
-    public LoanOfferServiceModel convertToServiceModel(LoanOfferDto source) {
+    public LoanOfferServiceModel convertToServiceModel(LoanOfferModelService source) {
         if (source == null) {
             return null;
         }

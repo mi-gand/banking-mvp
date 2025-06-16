@@ -1,33 +1,37 @@
 package ru.outofmemoryguru.calculator.service;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.outofmemoryguru.calculator.service.to.LoanOfferServiceModel;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.outofmemoryguru.calculator.testdata.ServiceModelTestData.expected4OffersModel;
 import static ru.outofmemoryguru.calculator.testdata.ServiceModelTestData.loanStatementServiceModel1;
 
 @SpringBootTest
-@RequiredArgsConstructor
 public class ScoringServiceTest {
 
-    private final ScoringService scoringService;
+    @Autowired
+    private ScoringService scoringService;
 
     @Test
-    public void testGenerateLoanOffers(){
-        scoringService.preScoringLoanOffers(loanStatementServiceModel1);
+    public void preScoringLoanOffers() {
+        List<LoanOfferServiceModel> actualOffers = scoringService.preScoringLoanOffers(loanStatementServiceModel1);
+
+        for (int i = 0; i < expected4OffersModel.size(); i++) {
+            LoanOfferServiceModel expected = expected4OffersModel.get(i);
+            LoanOfferServiceModel actual = actualOffers.get(i);
+
+            assertEquals(expected.getRequestedAmount(), actual.getRequestedAmount());
+            assertEquals(expected.getTotalAmount(), actual.getTotalAmount());
+            assertEquals(expected.getTerm(), actual.getTerm());
+            assertEquals(expected.getMonthlyPayment(), actual.getMonthlyPayment());
+            assertEquals(expected.getRate(), actual.getRate());
+            assertEquals(expected.isInsuranceEnabled(), actual.isInsuranceEnabled());
+            assertEquals(expected.isSalaryClient(), actual.isSalaryClient());
+        }
     }
-
-/*    @Test
-    void testPreScoringLoanOffers_returnsFourCombinations() {
-        when(loanStatementServiceModel1.getBaseRate()).thenReturn(BigDecimal.valueOf(10));
-        when(loanStatementServiceModel1.getInsuranceDiscount()).thenReturn(BigDecimal.valueOf(1));
-        when(loanStatementServiceModel1.getSalaryClientDiscount()).thenReturn(BigDecimal.valueOf(2));
-        when(loanStatementServiceModel1.getInsuranceCost()).thenReturn(BigDecimal.valueOf(6000));
-
-        List<LoanOfferServiceModel> offers = scoringService.preScoringLoanOffers(loanStatement);
-
-        assertEquals(4, offers.size());
-        assertTrue(offers.stream().anyMatch(o -> o.isInsuranceEnabled() && o.isSalaryClient()));
-    }*/
-
 }

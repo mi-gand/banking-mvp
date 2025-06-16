@@ -1,14 +1,13 @@
 package ru.outofmemoryguru.calculator.model;
 
 import lombok.Data;
-import ru.outofmemoryguru.calculator.controller.dto.LoanOfferDto;
+import ru.outofmemoryguru.calculator.controller.dto.LoanOfferModelService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-//@Entity
 public class LoanStatement {
     private BigDecimal amount;
     private Integer term;
@@ -19,5 +18,5 @@ public class LoanStatement {
     private LocalDate birthdate;
     private String passportSeries;
     private String passportNumber;
-    List<LoanOfferDto> preOffers;       //условия сохраняются в заявку
+    List<LoanOfferModelService> preOffers;
 }
