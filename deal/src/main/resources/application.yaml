@@ -1,0 +1,33 @@
+spring:
+  application:
+    name:  deal
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/banking?currentSchema=deal
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8080
+
+#http://localhost:8080/swagger-ui/index.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+
+logbook:
+  obfuscate:
+    headers:
+      - Authorization
+      - X-Secret
+
