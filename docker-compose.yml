@@ -13,12 +13,12 @@ services:
 
   calculator:
     build:
-      context: ./calculator
+      context: calculator
     ports:
       - "8080:8080"
 
   deal:
     build:
-      context: ./deal
+      context: deal
     ports:
       - "8081:8080"

@@ -4,7 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import ru.outofmemoryguru.deal.model.enumdata.Gender;
@@ -16,7 +17,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "client", schema = "deal")
 public class Client {
 
@@ -26,7 +28,7 @@ public class Client {
     private String lastName;
     private String firstName;
     private String middleName;
-    private LocalDate birtDate;
+    private LocalDate birthDate;
     private String email;
     private Gender gender;
     private MaritalStatus maritalStatus;

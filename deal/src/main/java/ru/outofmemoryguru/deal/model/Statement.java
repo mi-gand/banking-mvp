@@ -1,7 +1,8 @@
 package ru.outofmemoryguru.deal.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import ru.outofmemoryguru.deal.model.enumdata.ApplicationStatus;
@@ -9,10 +10,12 @@ import ru.outofmemoryguru.deal.model.jsonb.AppliedOffer;
 import ru.outofmemoryguru.deal.model.jsonb.StatusHistory;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "statement", schema = "deal")
 public class Statement {
 
@@ -27,12 +30,12 @@ public class Statement {
 
     private LocalDate creationDate;
 
-    @JdbcTypeCode(value = SqlTypes.JSON)    //todo Из прошлого МС подтягивать?
+    @JdbcTypeCode(value = SqlTypes.JSON)
     @Column(name = "applied_offer", columnDefinition = "jsonb")
-    private AppliedOffer appliedOffer;
+    private List<AppliedOffer> appliedOffer;
 
     private LocalDate signDate;
-    private String sesCode;    //todo WTF?  what is it? what type?
+    //  private String sesCode;
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private StatusHistory statusHistory;
