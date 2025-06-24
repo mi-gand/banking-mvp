@@ -20,6 +20,7 @@ import ru.outofmemoryguru.deal.service.to.LoanStatementServiceModel;
 import ru.outofmemoryguru.deal.service.to.converter.fromMsCalculator.ConverterFromCalculator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -47,9 +48,12 @@ public class DealService {
         List<AppliedOffer> offersMsCalculatorToAppliedOffersMsDeal = offersMsCalculator
                 .stream()
                 .map(ConverterFromCalculator::convertToAppliedOffer)
+                .peek(x -> x.setStatementId(statement.getStatementId()))
                 .toList();
 
+
         statement.setAppliedOffer(offersMsCalculatorToAppliedOffersMsDeal);
+        statementRepository.save(statement);
         return offersMsCalculator;
     }
 
@@ -94,7 +98,8 @@ public class DealService {
         statement.setCreditId(null);
         statement.setStatus(PREAPPROVAL);
         statement.setCreationDate(LocalDate.now());
-        statement.setAppliedOffer(null);
+
+        statement.setAppliedOffer(new ArrayList<>());
 
         StatusHistory statusHistory = new StatusHistory();
         statusHistory.setStatus(statement.getStatus());
