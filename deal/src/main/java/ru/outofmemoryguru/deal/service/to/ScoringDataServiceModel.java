@@ -4,6 +4,7 @@ import lombok.Data;
 import ru.outofmemoryguru.deal.controller.dto.EmploymentDto;
 import ru.outofmemoryguru.deal.model.enumdata.Gender;
 import ru.outofmemoryguru.deal.model.enumdata.MaritalStatus;
+import ru.outofmemoryguru.deal.model.jsonb.Employment;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ public class ScoringDataServiceModel {
     private String passportIssueBranch;
     private MaritalStatus maritalStatus;
     private Integer dependentAmount;
-    private EmploymentDto employment;
+    private Employment employment;
     private String accountNumber;
     private boolean isInsuranceEnabled;
     private boolean isSalaryClient;

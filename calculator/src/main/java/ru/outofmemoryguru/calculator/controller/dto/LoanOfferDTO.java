@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-public class LoanOfferModelService {
+public class LoanOfferDTO {
     private UUID statementId;
     private BigDecimal requestedAmount;
     private BigDecimal totalAmount;

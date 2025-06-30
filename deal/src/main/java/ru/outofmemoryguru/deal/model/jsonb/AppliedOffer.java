@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-public class AppliedOffer {     //todo аналог LoanOffer из MS-calculator
+public class AppliedOffer {
     private UUID statementId;
     private BigDecimal requestedAmount;
     private BigDecimal totalAmount;

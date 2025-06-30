@@ -6,10 +6,15 @@ import org.springframework.web.client.RestClient;
 
 @Configuration
 public class RestClientConfig {
+    private final CalculatorProperties calculatorProperties;
+
+    public RestClientConfig(CalculatorProperties calculatorProperties) {
+        this.calculatorProperties = calculatorProperties;
+    }
     @Bean
     public RestClient restClient(RestClient.Builder builder) {
         return builder
-                .baseUrl("http://calculator:8080")
+                .baseUrl(calculatorProperties.getBaseUrl())
                 .build();
     }
 }

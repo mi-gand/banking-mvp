@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5435/banking?currentSchema=deal
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: deal
+
+server:
+  port: 0
+
+calculator:
+  base-url: http://localhost:${wiremock.server.port}
+
+logging:
+  level:
+    root: WARN

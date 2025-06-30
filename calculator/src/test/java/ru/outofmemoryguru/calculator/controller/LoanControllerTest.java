@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ru.outofmemoryguru.calculator.controller.dto.CreditDto;
-import ru.outofmemoryguru.calculator.controller.dto.LoanOfferModelService;
+import ru.outofmemoryguru.calculator.controller.dto.LoanOfferDTO;
 
 import java.util.List;
 
@@ -68,15 +68,15 @@ public class LoanControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        List<LoanOfferModelService> actualOffers = objectMapper.readValue(
+        List<LoanOfferDTO> actualOffers = objectMapper.readValue(
                 responseJson,
                 new TypeReference<>() {
                 }
         );
 
         for (int i = 0; i < expectedOffers.size(); i++) {
-            LoanOfferModelService expected = expectedOffers.get(i);
-            LoanOfferModelService actual = actualOffers.get(i);
+            LoanOfferDTO expected = expectedOffers.get(i);
+            LoanOfferDTO actual = actualOffers.get(i);
 
             assertEquals(expected.getRequestedAmount(), actual.getRequestedAmount());
             assertEquals(expected.getTotalAmount(), actual.getTotalAmount());

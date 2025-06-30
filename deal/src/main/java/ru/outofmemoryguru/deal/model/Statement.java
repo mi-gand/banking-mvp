@@ -32,12 +32,11 @@ public class Statement {
 
     @JdbcTypeCode(value = SqlTypes.JSON)
     @Column(name = "applied_offer", columnDefinition = "jsonb")
-    private List<AppliedOffer> appliedOffer;
+    private AppliedOffer appliedOffer;
 
     private LocalDate signDate;
-    //  private String sesCode;
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private StatusHistory statusHistory;
+    private List<StatusHistory> statusHistory;
 
 }

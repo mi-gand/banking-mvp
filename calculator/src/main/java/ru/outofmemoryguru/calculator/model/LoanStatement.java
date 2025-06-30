@@ -1,7 +1,7 @@
 package ru.outofmemoryguru.calculator.model;
 
 import lombok.Data;
-import ru.outofmemoryguru.calculator.controller.dto.LoanOfferModelService;
+import ru.outofmemoryguru.calculator.controller.dto.LoanOfferDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,5 +18,5 @@ public class LoanStatement {
     private LocalDate birthdate;
     private String passportSeries;
     private String passportNumber;
-    List<LoanOfferModelService> preOffers;
+    private List<LoanOfferDTO> preOffers;
 }

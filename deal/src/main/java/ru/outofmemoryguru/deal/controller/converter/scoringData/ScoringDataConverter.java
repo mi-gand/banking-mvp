@@ -5,7 +5,7 @@ import ru.outofmemoryguru.deal.controller.converter.Converter;
 import ru.outofmemoryguru.deal.controller.dto.ScoringDataDto;
 import ru.outofmemoryguru.deal.service.to.ScoringDataServiceModel;
 
-@Component
+/*@Component
 public class ScoringDataConverter implements Converter<ScoringDataDto, ScoringDataServiceModel> {
     @Override
     public ScoringDataDto convertToDto(ScoringDataServiceModel source) {
@@ -58,4 +58,4 @@ public class ScoringDataConverter implements Converter<ScoringDataDto, ScoringDa
         model.setFirstName(source.getFirstName());
         return model;
     }
-}
+}*/

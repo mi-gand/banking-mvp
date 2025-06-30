@@ -1,9 +1,11 @@
-DROP TABLE IF EXISTS statement;
-DROP TABLE IF EXISTS credit;
-DROP TABLE IF EXISTS client;
+--from initDB, executes 1 time before postgres container
+CREATE SCHEMA IF NOT EXISTS deal;
+DROP TABLE IF EXISTS deal.statement;
+DROP TABLE IF EXISTS deal.credit;
+DROP TABLE IF EXISTS deal.client;
 DROP SEQUENCE IF EXISTS global_seq;
 
-CREATE TABLE client (
+CREATE TABLE deal.client (
                         client_id         UUID PRIMARY KEY,
                         last_name         VARCHAR,
                         first_name        VARCHAR,
@@ -18,7 +20,7 @@ CREATE TABLE client (
                         account_number    VARCHAR
 );
 
-CREATE TABLE credit (
+CREATE TABLE deal.credit (
                         credit_id            UUID PRIMARY KEY,
                         amount               DECIMAL,
                         term                 INTEGER,
@@ -31,7 +33,7 @@ CREATE TABLE credit (
                         credit_status        VARCHAR
 );
 
-CREATE TABLE statement (
+CREATE TABLE deal.statement (
                            statement_id     UUID PRIMARY KEY,
                            client_id        UUID,
                            credit_id        UUID,

@@ -77,11 +77,11 @@ public class DtoTestData {
     }
 
 
-    private static final LoanOfferModelService loanOfferDto1 = new LoanOfferModelService();
-    private static final LoanOfferModelService loanOfferDto2 = new LoanOfferModelService();
-    private static final LoanOfferModelService loanOfferDto3 = new LoanOfferModelService();
-    private static final LoanOfferModelService loanOfferDto4 = new LoanOfferModelService();
-    public static List<LoanOfferModelService> expectedOffers = List.of(loanOfferDto1,
+    private static final LoanOfferDTO loanOfferDto1 = new LoanOfferDTO();
+    private static final LoanOfferDTO loanOfferDto2 = new LoanOfferDTO();
+    private static final LoanOfferDTO loanOfferDto3 = new LoanOfferDTO();
+    private static final LoanOfferDTO loanOfferDto4 = new LoanOfferDTO();
+    public static List<LoanOfferDTO> expectedOffers = List.of(loanOfferDto1,
             loanOfferDto2, loanOfferDto3, loanOfferDto4);
 
     static {
