@@ -3,7 +3,7 @@ spring:
     name:  deal
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/banking?currentSchema=deal
+    url: jdbc:postgresql://localhost:5435/banking?currentSchema=deal
     username: user
     password: password
   jpa:
@@ -21,9 +21,8 @@ spring:
             org.hibernate.type.descriptor.sql: trace
 
 
-
 server:
-  port: 8080
+  port: 8079
 
 #http://localhost:8080/swagger-ui/index.html
 springdoc:
@@ -43,4 +42,4 @@ logbook:
       - X-Secret
 
 calculator:
-  base-url: http://calculator:8080
+  base-url: http://localhost:8080

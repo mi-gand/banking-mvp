@@ -3,6 +3,7 @@ package ru.outofmemoryguru.deal.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -40,6 +41,7 @@ import static ru.outofmemoryguru.deal.model.enumdata.CreditStatus.CALCULATED;
 
 @Service
 @RequiredArgsConstructor
+@Profile("local")       //todo следить за нужным профилем перед сборкой/проверкой
 public class DealService {
     private final ClientRepository clientRepository;
     private final StatementRepository statementRepository;
