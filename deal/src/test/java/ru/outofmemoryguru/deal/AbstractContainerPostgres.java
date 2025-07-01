@@ -1,5 +1,6 @@
-package ru.outofmemoryguru.deal.service;
+package ru.outofmemoryguru.deal;
 
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -10,11 +11,15 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_CLASS;
 
+
+@SpringBootTest
 @Testcontainers
 @Sql(statements = "CREATE SCHEMA IF NOT EXISTS deal", executionPhase = BEFORE_TEST_CLASS)
 @Sql(scripts = "classpath:schema.sql", executionPhase = BEFORE_TEST_CLASS)
 @ActiveProfiles("test")
 public class AbstractContainerPostgres {
+
+/*    protected WireMockServer wireMockServer;*/
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
@@ -23,16 +28,35 @@ public class AbstractContainerPostgres {
             .withPassword("test");
 
     @DynamicPropertySource
-    static void configure(DynamicPropertyRegistry registry){
+    static void configure(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.jpa.properties.hibernate.default_schema", () -> "deal");
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
-
-
     static {
         postgres.start();
     }
+
+/*    @BeforeEach
+    void setup() {
+        wireMockServer.stubFor(
+                post(urlEqualTo("/calculator/offers"))
+                        .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody("{ \"some\": \"response\" }")
+                        )
+        );
+
+        wireMockServer.stubFor(
+                post(urlEqualTo("/calculator/calc"))
+                        .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody("{ \"some\": \"response\" }")
+                        )
+        );
+    }*/
 }

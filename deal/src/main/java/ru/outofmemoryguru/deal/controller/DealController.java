@@ -39,7 +39,6 @@ private final ModelMapper modelMapper;
     @PostMapping("/offer/select")
     void selectOffer(@Valid @RequestBody LoanOfferDto requestDto) {
         dealService.selectOffer(loanOfferConverter.convertToServiceModel(requestDto));
-
     }
 
     @PostMapping("/calculate/{statementId}")

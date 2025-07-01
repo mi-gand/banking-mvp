@@ -41,7 +41,6 @@ import static ru.outofmemoryguru.deal.model.enumdata.CreditStatus.CALCULATED;
 
 @Service
 @RequiredArgsConstructor
-@Profile("local")       //todo следить за нужным профилем перед сборкой/проверкой
 public class DealService {
     private final ClientRepository clientRepository;
     private final StatementRepository statementRepository;
