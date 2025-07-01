@@ -11,13 +11,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_CLASS;
 
-
+//todo разобраться. Если более 1 наследника, то при запуске всех тестов они игнорятся
+//по одному запускаются
 @SpringBootTest
 @Testcontainers
 @Sql(statements = "CREATE SCHEMA IF NOT EXISTS deal", executionPhase = BEFORE_TEST_CLASS)
 @Sql(scripts = "classpath:schema.sql", executionPhase = BEFORE_TEST_CLASS)
 @ActiveProfiles("test")
-public class AbstractContainerPostgres {
+public abstract class AbstractContainerPostgres {
 
 /*    protected WireMockServer wireMockServer;*/
 
@@ -35,9 +36,9 @@ public class AbstractContainerPostgres {
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
-    static {
+/*    static {
         postgres.start();
-    }
+    }*/
 
 /*    @BeforeEach
     void setup() {

@@ -1,3 +1,4 @@
+
 package ru.outofmemoryguru.deal.service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,8 +30,8 @@ class DealServiceTest extends AbstractContainerPostgres {
     private ClientRepository clientRepository;
     @Autowired
     private StatementRepository statementRepository;
-    /*    @Autowired
-        private ModelMapper modelMapper;*/
+
+
     @Autowired
     private DataSource dataSource;
 
@@ -73,13 +74,12 @@ class DealServiceTest extends AbstractContainerPostgres {
         try (Connection conn = dataSource.getConnection()) {
             DatabaseConnection dbUnitConn = new DatabaseConnection(conn);
 
+}
             IDataSet dataSet = new FlatXmlDataSetBuilder().build(
                     getClass().getClassLoader().getResourceAsStream("test-dataset.xml")
             );
             DatabaseOperation.CLEAN_INSERT.execute(dbUnitConn, dataSet);
         }
     }*/
-
-
 
 }

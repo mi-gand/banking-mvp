@@ -76,8 +76,9 @@ public class DealControllerTest extends AbstractContainerPostgres {
 
         assertEquals(ApplicationStatus.APPROVED, updatedStatement.getStatus());
         assertThat(updatedStatement)
-                .isEqualToIgnoringGivenFields(statementForDtoTest, "statementId",
-                        "status", "appliedOffer", "statusHistory");
+                .usingRecursiveComparison()
+                .ignoringFields("statementId", "status", "appliedOffer", "statusHistory")
+                .isEqualTo(statementForDtoTest);
         assertTrue(previousStatusHistory.size() == 1 && updatedStatement.getStatusHistory().size() == 2);
 
     }
