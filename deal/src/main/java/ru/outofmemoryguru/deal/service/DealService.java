@@ -2,8 +2,8 @@ package ru.outofmemoryguru.deal.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -40,6 +40,7 @@ import static ru.outofmemoryguru.deal.model.enumdata.ChangeType.MANUAL;
 import static ru.outofmemoryguru.deal.model.enumdata.CreditStatus.CALCULATED;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class DealService {
     private final ClientRepository clientRepository;
@@ -47,8 +48,8 @@ public class DealService {
     private final CreditRepository creditRepository;
     private final RestClient restClient;
     private final ModelMapper modelMapper;
-    private final String URI_OFFERS = "/calculator/offers";
-    private final String URI_CALC = "/calculator/calc";
+    private final String URI_OFFERS_FROM_CALCULATOR = "/calculator/offers";
+    private final String URI_CALC_FROM_CALCULATOR = "/calculator/calc";
     private final LoanOfferConverter loanOfferConverter = new LoanOfferConverter();
 
     public List<LoanOfferServiceModel> creditPreCalculation(LoanStatementServiceModel requestDto) {
@@ -63,6 +64,8 @@ public class DealService {
                 .toList();
 
         statementRepository.save(statement);
+        log.info("Pre-calculation done for statementId={}: offers count = {}",
+                statement.getStatementId(), offersMsCalculator.size());
         return offersMsCalculator;
     }
 
@@ -125,7 +128,7 @@ public class DealService {
     private List<LoanOfferDto> requestLoanOffers(LoanStatementServiceModel requestDto) {
         return restClient
                 .post()
-                .uri(URI_OFFERS)
+                .uri(URI_OFFERS_FROM_CALCULATOR)
                 .body(requestDto)
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<LoanOfferDto>>() {
@@ -160,6 +163,7 @@ public class DealService {
         statement.setStatus(APPROVED);
 
         statementRepository.save(updateStatusHistoryStatement(statement, APPROVED, AUTOMATIC));
+        log.info("Statement status set to APPROVED for statementId={}", statementId);
     }
 
     private ScoringDataServiceModel saturateScoringData(FinishRegistrationServiceModel to, Statement statement) {
@@ -191,10 +195,10 @@ public class DealService {
         return scoringDataServiceModel;
     }
 
-    private Credit calculateCreditFromMsCalculator(ScoringDataServiceModel scoringDataServiceModel){
+    private Credit calculateCreditFromMsCalculator(ScoringDataServiceModel scoringDataServiceModel) {
         CreditDto creditDto = restClient
                 .post()
-                .uri(URI_CALC)
+                .uri(URI_CALC_FROM_CALCULATOR)
                 .body(scoringDataServiceModel)
                 .retrieve()
                 .body(new ParameterizedTypeReference<CreditDto>() {

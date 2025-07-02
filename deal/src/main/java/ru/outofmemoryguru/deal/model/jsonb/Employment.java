@@ -1,8 +1,8 @@
 package ru.outofmemoryguru.deal.model.jsonb;
 
 import lombok.Data;
-import org.aspectj.weaver.Position;
 import ru.outofmemoryguru.deal.model.enumdata.EmploymentStatus;
+import ru.outofmemoryguru.deal.model.enumdata.Position;
 
 import java.math.BigDecimal;
 

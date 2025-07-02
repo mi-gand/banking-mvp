@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import ru.outofmemoryguru.deal.model.enumdata.Gender;
 import ru.outofmemoryguru.deal.model.enumdata.MaritalStatus;
+import ru.outofmemoryguru.deal.model.jsonb.Employment;
 
 import java.time.LocalDate;
 
@@ -31,7 +32,7 @@ public class FinishRegistrationRequestDto {
 
     @NotNull
     @Valid
-    private EmploymentDto employment;
+    private Employment employment;
 
     @Size(min = 16, max = 16)
     @Pattern(regexp = "^[0-9]+$")

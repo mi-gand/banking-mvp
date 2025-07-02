@@ -1,6 +1,7 @@
 package ru.outofmemoryguru.deal;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import org.junit.jupiter.api.AfterAll;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -11,16 +12,21 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_CLASS;
 
-//todo разобраться. Если более 1 наследника, то при запуске всех тестов они игнорятся
-//по одному запускаются
-@SpringBootTest
 @Testcontainers
 @Sql(statements = "CREATE SCHEMA IF NOT EXISTS deal", executionPhase = BEFORE_TEST_CLASS)
 @Sql(scripts = "classpath:schema.sql", executionPhase = BEFORE_TEST_CLASS)
 @ActiveProfiles("test")
 public abstract class AbstractContainerPostgres {
 
-/*    protected WireMockServer wireMockServer;*/
+    protected static WireMockServer wireMockServer;
+
+    @AfterAll
+    static void afterAll() {
+        if (wireMockServer != null) {
+            wireMockServer.stop();
+        }
+    }
+
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
@@ -34,30 +40,14 @@ public abstract class AbstractContainerPostgres {
         registry.add("spring.jpa.properties.hibernate.default_schema", () -> "deal");
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("calculator.base-url", () -> "http://localhost:" + wireMockServer.port());
     }
 
-/*    static {
+    static {
+        wireMockServer = new WireMockServer(0);
+        wireMockServer.start();
+
         postgres.start();
-    }*/
+    }
 
-/*    @BeforeEach
-    void setup() {
-        wireMockServer.stubFor(
-                post(urlEqualTo("/calculator/offers"))
-                        .willReturn(aResponse()
-                                .withStatus(200)
-                                .withHeader("Content-Type", "application/json")
-                                .withBody("{ \"some\": \"response\" }")
-                        )
-        );
-
-        wireMockServer.stubFor(
-                post(urlEqualTo("/calculator/calc"))
-                        .willReturn(aResponse()
-                                .withStatus(200)
-                                .withHeader("Content-Type", "application/json")
-                                .withBody("{ \"some\": \"response\" }")
-                        )
-        );
-    }*/
 }
