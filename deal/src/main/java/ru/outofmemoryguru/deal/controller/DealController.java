@@ -64,8 +64,7 @@ public class DealController {
                                         regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]" +
                                                 "{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                                         message = "Invalid UUID format"
-                                )
-                                String statementId) {
+                                )String statementId) {
         FinishRegistrationServiceModel model = modelMapper.map(requestDto, FinishRegistrationServiceModel.class);
         dealService.creditFinalCalculation(model, statementId);
 

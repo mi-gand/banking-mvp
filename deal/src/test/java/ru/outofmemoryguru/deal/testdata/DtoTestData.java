@@ -136,11 +136,11 @@ public class DtoTestData {
         employment.setStatus(EmploymentStatus.EMPLOYED);
         employment.setPosition(Position.WORKER);
         employment.setEmployerInn("1234567890");
-        employment.setWorkExperienceTotal(15);
+        employment.setWorkExperienceTotal(18);
         employment.setWorkExperienceCurrent(5);
 
         finishRegistrationRequestDto1.setEmployment(employment);
-        finishRegistrationRequestDto1.setAccountNumber("40817810099910004312");
+        finishRegistrationRequestDto1.setAccountNumber("4081781009991000");
     }
 
     public static final ScoringDataDto scoringDataDtoForDtoTest = new ScoringDataDto();

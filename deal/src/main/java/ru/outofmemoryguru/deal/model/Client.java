@@ -1,9 +1,6 @@
 package ru.outofmemoryguru.deal.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -30,8 +27,13 @@ public class Client {
     private String middleName;
     private LocalDate birthDate;
     private String email;
+
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
+
     private Integer dependentAmount;
 
     @JdbcTypeCode(SqlTypes.JSON)

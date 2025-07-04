@@ -1,11 +1,13 @@
 package ru.outofmemoryguru.deal.controller.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.Data;
 import ru.outofmemoryguru.deal.model.enumdata.EmploymentStatus;
 import ru.outofmemoryguru.deal.model.enumdata.Position;
 
 import java.math.BigDecimal;
 
+@Data
 public class EmploymentDto {
     @NotNull
     private EmploymentStatus employmentStatus;

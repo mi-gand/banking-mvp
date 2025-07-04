@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.outofmemoryguru.deal.AbstractContainerPostgres;
 import ru.outofmemoryguru.deal.controller.dto.LoanOfferDto;
@@ -42,6 +43,9 @@ public class DealControllerTest extends AbstractContainerPostgres {
     private static final String DEAL_STATEMENT = "/deal/statement";
     private static final String DEAL_OFFER_SELECT = "/deal/offer/select";
     private static final String DEAL_CALCULATE = "/deal/calculate/{statementId}";
+
+    private final String URI_OFFERS_FROM_CALCULATOR = "/calculator/offers";
+    private final String URI_CALC_FROM_CALCULATOR = "/calculator/draft-calc";
 
     @Test
     void creditPreCalculation() throws Exception {
@@ -89,7 +93,7 @@ public class DealControllerTest extends AbstractContainerPostgres {
     }
 
     @Test
-    @Disabled
+    @Sql(scripts = "classpath:data.sql")
     void creditFinalCalculation() throws Exception {
         setupWireMockCalculate();
         mockMvc.perform(post(DEAL_CALCULATE, statementForDtoTest.getStatementId())
@@ -102,7 +106,7 @@ public class DealControllerTest extends AbstractContainerPostgres {
     void setupWireMockOffers() {
         wireMockServer.resetAll();
         wireMockServer.stubFor(com.github.tomakehurst.wiremock.client.WireMock
-                .post(urlEqualTo("/calculator/offers"))
+                .post(urlEqualTo(URI_OFFERS_FROM_CALCULATOR))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -112,7 +116,7 @@ public class DealControllerTest extends AbstractContainerPostgres {
     void setupWireMockCalculate() {
         wireMockServer.resetAll();
         wireMockServer.stubFor(com.github.tomakehurst.wiremock.client.WireMock
-                .post(urlEqualTo("/calculator/calc"))
+                .post(urlEqualTo(URI_CALC_FROM_CALCULATOR))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")

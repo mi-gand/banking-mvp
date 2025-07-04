@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import ru.outofmemoryguru.deal.controller.converter.loanOffer.LoanOfferConverter;
 import ru.outofmemoryguru.deal.controller.dto.CreditDto;
+import ru.outofmemoryguru.deal.controller.dto.EmploymentDto;
 import ru.outofmemoryguru.deal.controller.dto.LoanOfferDto;
 import ru.outofmemoryguru.deal.model.Client;
 import ru.outofmemoryguru.deal.model.Credit;
@@ -49,7 +50,7 @@ public class DealService {
     private final RestClient restClient;
     private final ModelMapper modelMapper;
     private final String URI_OFFERS_FROM_CALCULATOR = "/calculator/offers";
-    private final String URI_CALC_FROM_CALCULATOR = "/calculator/calc";
+    private final String URI_CALC_FROM_CALCULATOR = "/calculator/draft-calc";
     private final LoanOfferConverter loanOfferConverter = new LoanOfferConverter();
 
     public List<LoanOfferServiceModel> creditPreCalculation(LoanStatementServiceModel requestDto) {
@@ -159,7 +160,11 @@ public class DealService {
 
         ScoringDataServiceModel scoringDataServiceModel = saturateScoringData(to, statement);
 
-        creditRepository.save(calculateCreditFromMsCalculator(scoringDataServiceModel));
+        log.info("Request to calculator: {}", scoringDataServiceModel);
+        Credit newCredit = calculateCreditFromMsCalculator(scoringDataServiceModel);
+        log.info("Response from calculator: {}", newCredit);
+        newCredit.setCredit_id(UUID.randomUUID());
+        creditRepository.save(newCredit);
         statement.setStatus(APPROVED);
 
         statementRepository.save(updateStatusHistoryStatement(statement, APPROVED, AUTOMATIC));
@@ -170,7 +175,6 @@ public class DealService {
         ScoringDataServiceModel scoringDataServiceModel = new ScoringDataServiceModel();
         Client client = clientRepository.findById(statement.getClientId())
                 .orElseThrow(() -> new EntityNotFoundException("Client id " + statement.getClientId() + " not found"));
-
 
         scoringDataServiceModel.setFirstName(client.getFirstName());
         scoringDataServiceModel.setLastName(client.getLastName());
@@ -184,13 +188,13 @@ public class DealService {
         scoringDataServiceModel.setDependentAmount(to.getDependentAmount());
         scoringDataServiceModel.setPassportIssueDate(to.getPassportIssueDate());
         scoringDataServiceModel.setPassportIssueBranch(to.getPassportIssueBranch());
-        scoringDataServiceModel.setEmployment(to.getEmployment());
+        scoringDataServiceModel.setEmployment(modelMapper.map(to.getEmployment(), EmploymentDto.class));
         scoringDataServiceModel.setAccountNumber(to.getAccountNumber());
 
-        scoringDataServiceModel.setAmount(null);
-        scoringDataServiceModel.setTerm(null);
-        scoringDataServiceModel.setInsuranceEnabled(false);
-        scoringDataServiceModel.setSalaryClient(false);
+        scoringDataServiceModel.setAmount(statement.getAppliedOffer().getRequestedAmount());
+        scoringDataServiceModel.setTerm(statement.getAppliedOffer().getTerm());
+        scoringDataServiceModel.setInsuranceEnabled(statement.getAppliedOffer().isInsuranceEnabled());
+        scoringDataServiceModel.setSalaryClient(statement.getAppliedOffer().isSalaryClient());
 
         return scoringDataServiceModel;
     }

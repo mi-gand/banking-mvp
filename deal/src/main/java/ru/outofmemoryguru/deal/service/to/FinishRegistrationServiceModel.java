@@ -3,7 +3,6 @@ package ru.outofmemoryguru.deal.service.to;
 import lombok.Data;
 import ru.outofmemoryguru.deal.model.enumdata.Gender;
 import ru.outofmemoryguru.deal.model.enumdata.MaritalStatus;
-import ru.outofmemoryguru.deal.model.jsonb.Employment;
 
 import java.time.LocalDate;
 
@@ -14,6 +13,6 @@ public class FinishRegistrationServiceModel {
     private Integer dependentAmount;
     private LocalDate passportIssueDate;
     private String passportIssueBranch;
-    private Employment employment;
+    private EmploymentServiceModel employment;
     private String accountNumber;
 }

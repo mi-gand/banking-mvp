@@ -33,4 +33,19 @@ public class Credit {
     private boolean salaryClient;
     @Enumerated(EnumType.STRING)
     private CreditStatus creditStatus;
+
+    @Override
+    public String toString() {
+        return "Credit{" +
+                "credit_id=" + credit_id +
+                ", amount=" + amount +
+                ", term=" + term +
+                ", monthlyPayment=" + monthlyPayment +
+                ", rate=" + rate +
+                ", psk=" + psk +
+                ", paymentSchedule=" + paymentSchedule +
+                ", salaryClient=" + salaryClient +
+                ", creditStatus=" + creditStatus +
+                '}';
+    }
 }

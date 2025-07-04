@@ -63,4 +63,17 @@ public class LoanController {
 
         return creditConverter.convertToDto(model);
     }
+
+    @PostMapping("/draft-calc")
+    @Operation(summary = "Оценочный расчет кредита на основе частичных данных",
+            description = """
+                    Используется в микросервисе deal, повторяет /calculator/calc с 
+                    неполными данными без валидации""")
+    @ApiResponse(responseCode = "200", description = "Список счетов успешно получен")
+    public CreditDto draftCalculateCredit(@RequestBody ScoringDataDto scoringDataDto) {
+        CreditServiceModel model = scoringService
+                .calculateCredit(scoringDataConverter.convertToServiceModel(scoringDataDto));
+
+        return creditConverter.convertToDto(model);
+    }
 }
