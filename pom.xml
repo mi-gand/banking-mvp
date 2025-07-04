@@ -32,6 +32,7 @@
 
     <modules>
         <module>calculator</module>
+        <module>deal</module>
     </modules>
 
     <build>

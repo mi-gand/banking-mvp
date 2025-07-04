@@ -1,0 +1,55 @@
+<dataset>
+
+    <credit credit_id="cc111111-1111-1111-1111-111111111111" amount="500000" term="12" monthly_payment="56098.40"
+            rate="26.0" psk="673180.79"
+            payment_schedule='{"number": 1, "date": "2025-07-01", "totalPayment": 56098.40, "interestPayment": 10833.33, "debtPayment": 45265.07, "remainingDebt": 454734.93}'
+            salary_client="true" credit_status="CALCULATED"/>
+    <credit credit_id="cc222222-2222-2222-2222-222222222222" amount="500000" term="12" monthly_payment="56342.03"
+            rate="27.0" psk="676104.37"
+            payment_schedule='{"number": 1, "date": "2025-07-01", "totalPayment": 56342.03, "interestPayment": 11250.00, "debtPayment": 45092.03, "remainingDebt": 454907.97}'
+            salary_client="false" credit_status="CALCULATED"/>
+    <credit credit_id="cc333333-3333-3333-3333-333333333333" amount="500000" term="12" monthly_payment="48497.95"
+            rate="29.0" psk="581975.39"
+            payment_schedule='{"number": 1, "date": "2025-07-01", "totalPayment": 48497.95, "interestPayment": 12083.33, "debtPayment": 36414.62, "remainingDebt": 463585.38}'
+            salary_client="true" credit_status="CALCULATED"/>
+
+
+    <client client_id="bb111111-1111-1111-1111-111111111111" last_name="Ivanov" first_name="Ivan"
+            middle_name="Ivanovich" birth_date="1985-07-15"
+            email="ivan@ya.ru" gender="MALE" marital_status="MARRIED" dependent_amount="2"
+            passport_id='{"number": "567890", "series": "1234", "issue_date": "2005-06-20", "issue_branch": "MVD"}'
+            employment_id='{"salary": 80000, "status": "EMPLOYED", "position": "WORKER", "employerInn": "1234567890", "workExperienceTotal": 15, "workExperienceCurrent": 5}'
+            account_number="40817810099910004312"/>
+    <client client_id="bb222222-2222-2222-2222-222222222222" last_name="Petrov" first_name="Petr"
+            middle_name="Petrovich" birth_date="1990-08-10"
+            email="petr@ya.ru" gender="MALE" marital_status="SINGLE" dependent_amount="0"
+            passport_id='{"number": "123456", "series": "5678", "issue_date": "2010-09-15", "issue_branch": "MVD"}'
+            employment_id='{"salary": 120000, "status": "EMPLOYED", "position": "MANAGER", "employerInn": "0987654321", "workExperienceTotal": 10, "workExperienceCurrent": 3}'
+            account_number="40817810099910004313"/>
+    <client client_id="bb333333-3333-3333-3333-333333333333" last_name="Sidorova" first_name="Elena"
+            middle_name="Sergeevna" birth_date="1995-03-22"
+            email="elena@ya.ru" gender="FEMALE" marital_status="DIVORCED" dependent_amount="1"
+            passport_id='{"number": "789012", "series": "9012", "issue_date": "2015-05-12", "issue_branch": "MVD"}'
+            employment_id='{"salary": 90000, "status": "EMPLOYED", "position": "SPECIALIST", "employerInn": "1122334455", "workExperienceTotal": 7, "workExperienceCurrent": 2}'
+            account_number="40817810099910004314"/>
+
+
+    <statement statement_id="aa111111-1111-1111-1111-111111111111" client_id="bb111111-1111-1111-1111-111111111111"
+               creation_date="2025-06-24" credit_id="cc111111-1111-1111-1111-111111111111"
+               status="PREAPPROVAL"
+               status_history='[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]'
+               applied_offer='{"rate": 26.0, "term": 12, "statementId": "aa111111-1111-1111-1111-111111111111", "totalAmount": 673180.79, "salaryClient": true, "monthlyPayment": 56098.40, "requestedAmount": 500000, "insuranceEnabled": true}'
+               sign_date=""/>
+    <statement statement_id="aa222222-2222-2222-2222-222222222222" client_id="bb222222-2222-2222-2222-222222222222"
+               creation_date="2025-06-24" credit_id="cc222222-2222-2222-2222-222222222222"
+               status="PREAPPROVAL"
+               status_history='[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]'
+               applied_offer='{"rate": 27.0, "term": 12, "statementId": "aa222222-2222-2222-2222-222222222222", "totalAmount": 676104.37, "salaryClient": false, "monthlyPayment": 56342.03, "requestedAmount": 500000, "insuranceEnabled": true}'
+               sign_date=""/>
+    <statement statement_id="aa333333-3333-3333-3333-333333333333" client_id="bb333333-3333-3333-3333-333333333333"
+               creation_date="2025-06-24" credit_id="cc333333-3333-3333-3333-333333333333"
+               status="PREAPPROVAL"
+               status_history='[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]'
+               applied_offer='{"rate": 29.0, "term": 12, "statementId": "aa333333-3333-3333-3333-333333333333", "totalAmount": 581975.39, "salaryClient": true, "monthlyPayment": 48497.95, "requestedAmount": 500000, "insuranceEnabled": false}'
+               sign_date=""/>
+</dataset>

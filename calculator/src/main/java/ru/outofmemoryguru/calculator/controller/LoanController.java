@@ -14,7 +14,7 @@ import ru.outofmemoryguru.calculator.controller.converter.loanOffer.LoanOfferCon
 import ru.outofmemoryguru.calculator.controller.converter.loanStatement.LoanStatementConverter;
 import ru.outofmemoryguru.calculator.controller.converter.scoringData.ScoringDataConverter;
 import ru.outofmemoryguru.calculator.controller.dto.CreditDto;
-import ru.outofmemoryguru.calculator.controller.dto.LoanOfferModelService;
+import ru.outofmemoryguru.calculator.controller.dto.LoanOfferDTO;
 import ru.outofmemoryguru.calculator.controller.dto.LoanStatementRequestDto;
 import ru.outofmemoryguru.calculator.controller.dto.ScoringDataDto;
 import ru.outofmemoryguru.calculator.service.ScoringService;
@@ -39,7 +39,7 @@ public class LoanController {
     @Operation(summary = "Получить список предложений",
             description = "Возвращает 4 предварительных кредитных предложения")
     @ApiResponse(responseCode = "200", description = "Список счетов успешно получен")
-    public List<LoanOfferModelService> offerPreCalculation(@Valid @RequestBody LoanStatementRequestDto dto) {
+    public List<LoanOfferDTO> offerPreCalculation(@Valid @RequestBody LoanStatementRequestDto dto) {
 
         List<LoanOfferServiceModel> responseServiceModels = scoringService
                 .preScoringLoanOffers(loanStatementConverter.convertToServiceModel(dto));
