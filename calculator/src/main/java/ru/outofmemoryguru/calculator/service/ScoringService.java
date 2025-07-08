@@ -128,6 +128,7 @@ public class ScoringService {
         switch (model.getEmployment().getEmploymentStatus()) {
             case UNEMPLOYED -> throw new IllegalArgumentException("Denied: unemployed");
             case SELF_EMPLOYED -> baseRate = baseRate.add(BigDecimal.valueOf(2));
+            case EMPLOYED -> baseRate = baseRate.add(BigDecimal.valueOf(1.5));
             case BUSINESS_OWNER -> baseRate = baseRate.add(BigDecimal.valueOf(1));
         }
 

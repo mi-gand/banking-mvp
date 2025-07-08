@@ -1,4 +1,4 @@
-package ru.outofmemoryguru.calculator.controller.dto;
+package ru.outofmemoryguru.deal.model.jsonb;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-public class LoanOfferModelService {
+public class AppliedOffer {
     private UUID statementId;
     private BigDecimal requestedAmount;
     private BigDecimal totalAmount;
