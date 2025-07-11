@@ -101,7 +101,6 @@
             <version>4.2.0</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
@@ -110,12 +109,16 @@
             <scope>test</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <version>2.7.3</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
 
     </dependencies>
