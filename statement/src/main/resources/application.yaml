@@ -1,9 +1,9 @@
 spring:
   application:
-    name:  deal
+    name:  statement
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/banking?currentSchema=deal
+    url: jdbc:postgresql://postgres:5432/banking?currentSchema=statement
     username: user
     password: password
   jpa:
@@ -42,5 +42,5 @@ logbook:
       - Authorization
       - X-Secret
 
-calculator:
-  base-url: ${CALCULATOR_BASE_URL:http://calculator:8080}
+deal:
+  base-url: http://deal:8080

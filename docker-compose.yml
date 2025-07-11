@@ -23,3 +23,9 @@ services:
     ports:
       - "8081:8080"
       - "5005:5005"
+
+  statement:
+    build:
+      context: statement
+    ports:
+      - "8082:8080"

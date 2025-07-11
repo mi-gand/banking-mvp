@@ -41,7 +41,6 @@ public class DealController {
                 .stream()
                 .map(loanOfferConverter::convertToDto)
                 .toList();
-
     }
 
     @PostMapping("/offer/select")
