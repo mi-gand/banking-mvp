@@ -34,6 +34,7 @@
         <module>calculator</module>
         <module>deal</module>
         <module>statement</module>
+        <module>integration-tests</module>
     </modules>
 
     <build>

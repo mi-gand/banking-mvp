@@ -2,6 +2,7 @@ package ru.outofmemoryguru.statement;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -17,6 +18,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @Sql(statements = "CREATE SCHEMA IF NOT EXISTS deal", executionPhase = BEFORE_TEST_CLASS)
 @Sql(scripts = "classpath:schema.sql", executionPhase = BEFORE_TEST_CLASS)
 @ActiveProfiles("test")
+@Disabled
 public abstract class AbstractContainerPostgres {
 
     protected static WireMockServer wireMockServer;
@@ -53,7 +55,10 @@ public abstract class AbstractContainerPostgres {
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
         registry.add("deal.base-url", () -> "http://localhost:" + dealContainer.getMappedPort(8080));
-        dealContainer.withEnv("CALCULATOR_BASE_URL",
+        dealContainer.withEnv("DATASOURCE_URL", postgres.getJdbcUrl())
+                .withEnv("DATASOURCE_USERNAME", postgres.getUsername())
+                .withEnv("DATASOURCE_PASSWORD", postgres.getPassword())
+                .withEnv("CALCULATOR_BASE_URL",
                 "http://" + calculatorContainer.getHost() + ":" + calculatorContainer.getMappedPort(8080));
     }
 
@@ -84,6 +89,11 @@ public abstract class AbstractContainerPostgres {
         wireMockServer.start();
 
         postgres.start();           //todo проверить почему в прошлые разы пришлось поставить запуск, а не заработало автоматом
+        try {
+            Thread.sleep(5000);         //жду пока точно поднимется база, чтоб не вылетела ошибка подкл
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         calculatorContainer.start();
         dealContainer.start();
     }

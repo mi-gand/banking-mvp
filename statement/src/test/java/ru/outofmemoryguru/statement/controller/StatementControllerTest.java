@@ -29,7 +29,6 @@ import static ru.outofmemoryguru.statement.testdata.JsonTestData.EXPECTED4_OFFER
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Disabled
 class StatementControllerTest extends AbstractContainerPostgres {
 
     @Autowired

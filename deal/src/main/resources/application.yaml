@@ -3,9 +3,9 @@ spring:
     name:  deal
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/banking?currentSchema=deal
-    username: user
-    password: password
+    url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/banking?currentSchema=deal}
+    username: ${DATASOURCE_USERNAME:user}
+    password: ${DATASOURCE_PASSWORD:password}
   jpa:
     hibernate:
       ddl-auto: validate

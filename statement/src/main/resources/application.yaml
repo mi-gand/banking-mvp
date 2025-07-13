@@ -3,9 +3,9 @@ spring:
     name:  statement
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/banking?currentSchema=statement
-    username: user
-    password: password
+    url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/banking?currentSchema=deal}
+    username: ${DATASOURCE_USERNAME:user}
+    password: ${DATASOURCE_PASSWORD:password}
   jpa:
     hibernate:
       ddl-auto: update
@@ -43,4 +43,4 @@ logbook:
       - X-Secret
 
 deal:
-  base-url: http://deal:8080
+  base-url: ${DEAL_BASE_URL:http://deal:8080}
