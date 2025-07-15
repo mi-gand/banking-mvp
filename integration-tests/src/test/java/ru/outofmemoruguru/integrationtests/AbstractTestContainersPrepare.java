@@ -4,7 +4,6 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import org.junit.jupiter.api.Disabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
@@ -15,8 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Disabled
+
 public abstract class AbstractTestContainersPrepare {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractTestContainersPrepare.class);
@@ -94,7 +92,7 @@ public abstract class AbstractTestContainersPrepare {
         initAndPopulateDb();
 
         calculatorContainer
-                //.withExposedPorts(8080)           //подключить для прямого доступа к МС с помощью getMappedPort
+                .withExposedPorts(8080)
                 .withNetwork(dockerNet)
                 .withNetworkAliases("calculator")
                 .start();
@@ -102,14 +100,15 @@ public abstract class AbstractTestContainersPrepare {
         log.debug("Запущен контейнер calculator. " + getTimeFromStart());
 
         dealContainer
-                //.withExposedPorts(8080)           //подключить для прямого доступа к МС с помощью getMappedPort
+                .withExposedPorts(8080)
                 .withNetwork(dockerNet)
+                .withNetworkAliases("deal")
                 .dependsOn(postgres, calculatorContainer)
-                //.withEnv("DATASOURCE_URL", postgres.getJdbcUrl())
                 .withEnv("DATASOURCE_URL", "jdbc:postgresql://postgres:5432/test")
                 .withEnv("DATASOURCE_USERNAME", postgres.getUsername())
                 .withEnv("DATASOURCE_PASSWORD", postgres.getPassword())
                 .withEnv("CALCULATOR_BASE_URL", "http://calculator:8080")
+                .withEnv("SPRING_LIQUIBASE_ENABLED", "false")   //можно включить в deal но удалить initAndPopulateDb()
                 .start();
 
         log.debug("Запущен контейнер deal. {}", getTimeFromStart());
@@ -122,8 +121,8 @@ public abstract class AbstractTestContainersPrepare {
                 .withEnv("DATASOURCE_URL", "jdbc:postgresql://postgres:5432/test")
                 .withEnv("DATASOURCE_USERNAME", postgres.getUsername())
                 .withEnv("DATASOURCE_PASSWORD", postgres.getPassword())
+                .withEnv("DEAL_BASE_URL", "http://deal:8080")
                 .start();
-        //.withEnv("DEAL_BASE_URL", "http://deal:8080");
 
         log.debug("Запущен контейнер statement. {}", getTimeFromStart());
     }

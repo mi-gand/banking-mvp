@@ -2,20 +2,6 @@ package ru.outofmemoryguru.statement.testdata;
 
 public class JsonTestData {
 
-    public static final String OFFER1_JSON = """
-            {
-                "amount": 500000,
-                "term": 12,
-                "firstName": "Ivan",
-                "lastName": "Ivanov",
-                "middleName": "Ivanovich",
-                "email": "ivan@ya.ru",
-                "birthdate": "2000-01-01",
-                "passportSeries": "1234",
-                "passportNumber": "567890"
-            }
-            """;
-
 
     public static final String EXPECTED4_OFFERS_JSON = """
             [
@@ -60,34 +46,5 @@ public class JsonTestData {
                 "salaryClient": false
               }
             ]
-            """;
-
-    public static final String SCORING_DATA_JSON = """
-            {
-              "amount": 500000,
-              "term": 12,
-              "firstName": "Ivan",
-              "lastName": "Ivanov",
-              "middleName": "Ivanovich",
-              "gender": "MALE",
-              "birthdate": "1985-07-15",
-              "passportSeries": "1234",
-              "passportNumber": "567890",
-              "passportIssueDate": "2005-06-20",
-              "passportIssueBranch": "MVD",
-              "maritalStatus": "MARRIED",
-              "dependentAmount": 2,
-              "employment": {
-                "salary": 80000,
-                "status": "EMPLOYED",
-                "position": "WORKER",
-                "employerInn": "1234567890",
-                "workExperienceTotal": 15,
-                "workExperienceCurrent": 5
-              },
-              "accountNumber": "40817810099910004312",
-              "insuranceEnabled": true,
-              "salaryClient": true
-            }
             """;
 }

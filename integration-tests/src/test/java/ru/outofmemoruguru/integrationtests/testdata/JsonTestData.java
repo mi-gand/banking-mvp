@@ -2,6 +2,19 @@ package ru.outofmemoruguru.integrationtests.testdata;
 
 public class JsonTestData {
 
+    public static final String OFFER1_JSON = """
+            {
+                "statementId": "aa111111-1111-1111-1111-111111111111",
+                "requestedAmount": 500000,
+                "totalAmount": 673180.79,
+                "term": 12,
+                "monthlyPayment": 56098.40,
+                "rate": 26.0,
+                "insuranceEnabled": true,
+                "salaryClient": true
+              }
+            """;
+
     public static final String LOAN_STATEMENT_JSON = """
             {
                 "amount": 500000,

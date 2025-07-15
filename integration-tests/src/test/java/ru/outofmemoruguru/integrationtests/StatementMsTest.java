@@ -1,11 +1,13 @@
 
 package ru.outofmemoruguru.integrationtests;
 
-import org.junit.jupiter.api.Disabled;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -14,10 +16,10 @@ import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static ru.outofmemoruguru.integrationtests.testdata.JsonTestData.EXPECTED4_OFFERS_JSON;
-import static ru.outofmemoruguru.integrationtests.testdata.JsonTestData.LOAN_STATEMENT_JSON;
+import static ru.outofmemoruguru.integrationtests.testdata.JsonTestData.*;
 
-@Disabled
+@Testcontainers
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class StatementMsTest extends AbstractTestContainersPrepare {
 
     private final static Logger log = LoggerFactory.getLogger(StatementMsTest.class);
@@ -25,8 +27,8 @@ class StatementMsTest extends AbstractTestContainersPrepare {
     private final String URL_OFFERS_STATEMENT;
     private final String URL_SELECT_OFFER_STATEMENT;
 
-    //private final ObjectMapper mapper = new ObjectMapper();
     private final String URL_STATEMENT;
+    private final String DELETE_STATEMENT_ID = "(?m)\\s*\"statementId\"\\s*:\\s*\"[^\"]*\",?";
 
     private StatementMsTest() {
         URL_STATEMENT = "http://localhost:" + statementContainer.getMappedPort(8080);
@@ -54,8 +56,7 @@ class StatementMsTest extends AbstractTestContainersPrepare {
 
 
     @Test
-    @DisplayName("POST /statement/statement request LoanStatement, response List<LoanOfferDto>")
-    @Disabled
+    @DisplayName("/statement/statement -> List<LoanOfferDto>")
     void forwardToDealMsLoanOffers() throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -68,64 +69,29 @@ class StatementMsTest extends AbstractTestContainersPrepare {
 
         String actual4LoanOffers = response.body();
 
+        String actual4LoanOffersWithoutId = actual4LoanOffers.replaceAll(DELETE_STATEMENT_ID, "")
+                .replaceAll("\\s+", "");
+        String expected4OffersJsonWithoutId = EXPECTED4_OFFERS_JSON.replaceAll(DELETE_STATEMENT_ID, "")
+                .replaceAll("\\s+", "");
+        System.out.println(dealContainer.getLogs());
+        System.out.println(statementContainer.getLogs());
+        assertEquals(expected4OffersJsonWithoutId, actual4LoanOffersWithoutId);
 
-        assertEquals(EXPECTED4_OFFERS_JSON, actual4LoanOffers); //совпадать не будет из-за ID
-
-
-
-/*        //todo перепроверить с deal
-        List<StatusHistory> previousStatusHistory = statementForDtoTest.getStatusHistory();
-
-        statementRepository.save(statementForDtoTest);
-
-        mockMvc.perform(post(URI_SELECT_OFFER_STATEMENT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loanOfferDto1)))
-                .andExpect(status().isOk());
-
-        Statement updatedStatement = statementRepository.findById(statementForDtoTest.getStatementId()).orElseThrow();
-
-        assertEquals(ApplicationStatus.APPROVED, updatedStatement.getStatus());
-        assertThat(updatedStatement)
-                .usingRecursiveComparison()
-                .ignoringFields("statementId", "status", "appliedOffer", "statusHistory")
-                .isEqualTo(statementForDtoTest);
-        assertTrue(previousStatusHistory.size() == 1 && updatedStatement.getStatusHistory().size() == 2);*/
     }
 
     @Test
+    @DisplayName("/statement/offer -> 200 ")
     void selectOffer() throws Exception {
-/*        setupWireMockOffers();
-        String responseJson = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                        .post(URI_OFFERS_STATEMENT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loanStatementDtoFromStatementAa11)))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL_SELECT_OFFER_STATEMENT))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(OFFER1_JSON))
+                .build();
 
-        List<LoanOfferDto> actualOffers = objectMapper.readValue(
-                responseJson,
-                new com.fasterxml.jackson.core.type.TypeReference<>() {
-                }
-        );
-        assertThat(actualOffers)
-                .usingElementComparatorIgnoringFields("statementId")
-                .containsExactlyInAnyOrderElementsOf(expected4OffersDto);*/
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+
     }
-
-/*    void setupWireMockOffers() {
-        wireMockServer.resetAll();
-        wireMockServer.stubFor(com.github.tomakehurst.wiremock.client.WireMock
-                .post(urlEqualTo(URI_OFFERS_FROM_CALCULATOR))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(EXPECTED4_OFFERS_JSON)));
-    }*/
-
-
-
 }
 
