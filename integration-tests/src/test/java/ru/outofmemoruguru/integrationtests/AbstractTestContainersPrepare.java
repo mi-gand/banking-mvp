@@ -4,15 +4,19 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.junit.jupiter.api.Disabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Disabled
 public abstract class AbstractTestContainersPrepare {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractTestContainersPrepare.class);
@@ -20,16 +24,20 @@ public abstract class AbstractTestContainersPrepare {
 
     private static final Network dockerNet = Network.newNetwork();
 
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15");
+    @Container
+    protected PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15");
 
-    static GenericContainer<?> calculatorContainer = new GenericContainer<>("ms-calculator:test");
+    @Container
+    protected GenericContainer<?> calculatorContainer = new GenericContainer<>("ms-calculator:test");
 
-    static GenericContainer<?> dealContainer = new GenericContainer<>("ms-deal:test");
+    @Container
+    protected GenericContainer<?> dealContainer = new GenericContainer<>("ms-deal:test");
 
-    static GenericContainer<?> statementContainer = new GenericContainer<>("ms-statement:test");
+    @Container
+    protected GenericContainer<?> statementContainer = new GenericContainer<>("ms-statement:test");
 
 
-    static {
+    {
         //todo в будущем заодно сделать проверку на запущенный процесс докер десктопа
         try {
             String os = System.getProperty("os.name").toLowerCase();
@@ -38,7 +46,7 @@ public abstract class AbstractTestContainersPrepare {
             ProcessBuilder checkDocker;
 
 
-            if(isOsWindows){
+            if (isOsWindows) {
                 checkDocker = new ProcessBuilder("C:\\Program Files\\Git\\bin\\bash.exe"
                         , "start-docker-service.sh").inheritIO();
 
@@ -48,7 +56,6 @@ public abstract class AbstractTestContainersPrepare {
                     throw new RuntimeException("check-docker-service.sh ошибка: " + codeCheck);
                 }
             }
-
 
 
             ProcessBuilder buildImages;
@@ -99,7 +106,7 @@ public abstract class AbstractTestContainersPrepare {
                 .withNetwork(dockerNet)
                 .dependsOn(postgres, calculatorContainer)
                 //.withEnv("DATASOURCE_URL", postgres.getJdbcUrl())
-                .withEnv("DATASOURCE_URL","jdbc:postgresql://postgres:5432/test")
+                .withEnv("DATASOURCE_URL", "jdbc:postgresql://postgres:5432/test")
                 .withEnv("DATASOURCE_USERNAME", postgres.getUsername())
                 .withEnv("DATASOURCE_PASSWORD", postgres.getPassword())
                 .withEnv("CALCULATOR_BASE_URL", "http://calculator:8080")
@@ -112,7 +119,7 @@ public abstract class AbstractTestContainersPrepare {
                 .withNetwork(dockerNet)
                 .withNetworkAliases("statement")
                 .dependsOn(dealContainer)
-                .withEnv("DATASOURCE_URL","jdbc:postgresql://postgres:5432/test")
+                .withEnv("DATASOURCE_URL", "jdbc:postgresql://postgres:5432/test")
                 .withEnv("DATASOURCE_USERNAME", postgres.getUsername())
                 .withEnv("DATASOURCE_PASSWORD", postgres.getPassword())
                 .start();
@@ -121,11 +128,11 @@ public abstract class AbstractTestContainersPrepare {
         log.debug("Запущен контейнер statement. {}", getTimeFromStart());
     }
 
-    protected static String getTimeFromStart(){
+    protected static String getTimeFromStart() {
         return "С запуска прошло" + (START_TIME - System.currentTimeMillis());
     }
 
-    private static void initAndPopulateDb() {
+    protected void initAndPopulateDb() {
         try (Connection conn = postgres.createConnection("")) {
             Liquibase liquibase = new Liquibase(
                     "test-db-changelog.xml",

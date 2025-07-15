@@ -45,4 +45,14 @@ public class StatementController {
     void selectOffer(@Valid @RequestBody LoanOfferDto requestDto) {
         statementService.selectOffer(modelMapper.map(requestDto, LoanOfferServiceModel.class));
     }
+
+    @PostMapping("/offer/reject")
+    @Operation(summary = "Клиент отказался от всех вариантов предложений ",
+            description = """
+                    Заглушка на непрописанную логику
+                    """)
+    @ApiResponse(responseCode = "200", description = "Отказ принят")
+    void clientRejectOffer() {
+        statementService.clientRejectOffer();
+    }
 }

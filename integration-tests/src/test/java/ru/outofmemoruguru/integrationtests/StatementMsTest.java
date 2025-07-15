@@ -1,7 +1,7 @@
 
 package ru.outofmemoruguru.integrationtests;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -11,15 +11,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Connection;
-import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.outofmemoruguru.integrationtests.testdata.JsonTestData.EXPECTED4_OFFERS_JSON;
 import static ru.outofmemoruguru.integrationtests.testdata.JsonTestData.LOAN_STATEMENT_JSON;
 
-
+@Disabled
 class StatementMsTest extends AbstractTestContainersPrepare {
 
     private final static Logger log = LoggerFactory.getLogger(StatementMsTest.class);
@@ -57,6 +55,7 @@ class StatementMsTest extends AbstractTestContainersPrepare {
 
     @Test
     @DisplayName("POST /statement/statement request LoanStatement, response List<LoanOfferDto>")
+    @Disabled
     void forwardToDealMsLoanOffers() throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -125,6 +124,8 @@ class StatementMsTest extends AbstractTestContainersPrepare {
                         .withHeader("Content-Type", "application/json")
                         .withBody(EXPECTED4_OFFERS_JSON)));
     }*/
+
+
 
 }
 

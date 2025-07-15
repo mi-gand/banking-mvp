@@ -43,7 +43,7 @@ public class DtoTestData {
         loanStatementRequestDtoInvalid12Err.setPassportNumber("1234567");
     }
 
-    public static final int EXPECTED_VALIDATION_ERR_12 = 12;
+    public static final int EXPECTED_VALIDATION_ERR_12_NUMBER = 12;
 
     public static final ScoringDataDto scoringDataDto1 = new ScoringDataDto();
 

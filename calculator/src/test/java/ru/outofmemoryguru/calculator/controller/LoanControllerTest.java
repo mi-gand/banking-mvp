@@ -55,7 +55,7 @@ public class LoanControllerTest {
         JsonNode errorsNode = root.get("errors");
 
         int actualErrorCount = errorsNode.size();
-        assertThat(actualErrorCount).isEqualTo(EXPECTED_VALIDATION_ERR_12);
+        assertThat(actualErrorCount).isEqualTo(EXPECTED_VALIDATION_ERR_12_NUMBER);
     }
 
     @Test

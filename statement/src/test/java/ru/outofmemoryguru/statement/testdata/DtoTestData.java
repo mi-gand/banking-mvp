@@ -2,18 +2,14 @@ package ru.outofmemoryguru.statement.testdata;
 
 import ru.outofmemoryguru.statement.controller.dto.LoanOfferDto;
 import ru.outofmemoryguru.statement.controller.dto.LoanStatementRequestDto;
-import ru.outofmemoryguru.statement.model.Statement;
-import ru.outofmemoryguru.statement.model.enumdata.ApplicationStatus;
-import ru.outofmemoryguru.statement.model.jsonb.AppliedOffer;
-import ru.outofmemoryguru.statement.model.jsonb.StatusHistory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 public class DtoTestData {
+    public static final int EXPECTED_VALIDATION_ERR_12_NUMBER = 12;
     public static final LoanOfferDto loanOfferDto1 = new LoanOfferDto();
     public static final LoanOfferDto loanOfferDto2 = new LoanOfferDto();
     public static final LoanOfferDto loanOfferDto3 = new LoanOfferDto();
@@ -78,35 +74,17 @@ public class DtoTestData {
         loanStatementDtoFromStatementAa11.setPassportNumber("567890");
     }
 
-    public static final Statement statementForDtoTest = new Statement();
+    public static final LoanStatementRequestDto loanStatementRequestDtoInvalid12Err = new LoanStatementRequestDto();
 
     static {
-
-
-        statementForDtoTest.setStatementId(UUID.fromString("aa111111-1111-1111-1111-111111111111"));
-        statementForDtoTest.setClientId(UUID.fromString("bb111111-1111-1111-1111-111111111111"));
-        statementForDtoTest.setCreditId(UUID.fromString("cc111111-1111-1111-1111-111111111111"));
-        statementForDtoTest.setStatus(ApplicationStatus.PREAPPROVAL);
-        statementForDtoTest.setCreationDate(LocalDate.now());
-
-        AppliedOffer offer = new AppliedOffer();
-        offer.setRequestedAmount(new BigDecimal("500000"));
-        offer.setTotalAmount(new BigDecimal("584922.76"));
-        offer.setTerm(12);
-        offer.setMonthlyPayment(new BigDecimal("48743.56"));
-        offer.setRate(new BigDecimal("30.0"));
-        offer.setInsuranceEnabled(false);
-        offer.setSalaryClient(false);
-        statementForDtoTest.setAppliedOffer(offer);
-
-        statementForDtoTest.setSignDate(null);
-
-        StatusHistory history = new StatusHistory();
-        history.setStatus(ApplicationStatus.PREAPPROVAL);
-        history.setTime(LocalDateTime.now());
-
-        statementForDtoTest.setStatusHistory(List.of(history));
-
+        loanStatementRequestDtoInvalid12Err.setAmount(new BigDecimal("20000001"));
+        loanStatementRequestDtoInvalid12Err.setTerm(21);
+        loanStatementRequestDtoInvalid12Err.setFirstName("QwertyQwertyQwertyQwertyQwerty1");
+        loanStatementRequestDtoInvalid12Err.setLastName("QwertyQwertyQwertyQwertyQwerty2");
+        loanStatementRequestDtoInvalid12Err.setMiddleName("QwertyQwertyQwertyQwertyQwerty3");
+        loanStatementRequestDtoInvalid12Err.setEmail("wrongEmail");
+        loanStatementRequestDtoInvalid12Err.setBirthdate(LocalDate.now().minusYears(5));
+        loanStatementRequestDtoInvalid12Err.setPassportSeries("12345");
+        loanStatementRequestDtoInvalid12Err.setPassportNumber("1234567");
     }
-
 }

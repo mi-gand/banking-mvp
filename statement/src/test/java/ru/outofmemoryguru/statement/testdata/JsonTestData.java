@@ -2,6 +2,21 @@ package ru.outofmemoryguru.statement.testdata;
 
 public class JsonTestData {
 
+    public static final String OFFER1_JSON = """
+            {
+                "amount": 500000,
+                "term": 12,
+                "firstName": "Ivan",
+                "lastName": "Ivanov",
+                "middleName": "Ivanovich",
+                "email": "ivan@ya.ru",
+                "birthdate": "2000-01-01",
+                "passportSeries": "1234",
+                "passportNumber": "567890"
+            }
+            """;
+
+
     public static final String EXPECTED4_OFFERS_JSON = """
             [
               {

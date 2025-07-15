@@ -56,4 +56,8 @@ public class StatementService {
             throw new UnsupportedOperationException("Ошибка на стороне Deal: " + resp.getStatusCode());
         }
     }
+
+    public void clientRejectOffer(){
+        log.info("Клиент отказался от предложения. Заглушка на будущую логику");
+    }
 }
