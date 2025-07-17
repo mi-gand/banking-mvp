@@ -10,7 +10,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-@ActiveProfiles("test")
 public abstract class AbstractContainerPostgres {
 
     protected static WireMockServer wireMockServer;

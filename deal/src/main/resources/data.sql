@@ -1,8 +1,8 @@
 --from populateDB, executes 1 time before postgres container
 
-DELETE FROM deal.client;
-DELETE FROM deal.credit;
-DELETE FROM deal.statement;
+TRUNCATE TABLE deal.client CASCADE ;
+TRUNCATE TABLE deal.credit CASCADE ;
+TRUNCATE TABLE deal.statement CASCADE ;
 
 --Statements
 INSERT INTO deal.statement (statement_id, client_id, creation_date, credit_id, status, status_history, applied_offer, sign_date)

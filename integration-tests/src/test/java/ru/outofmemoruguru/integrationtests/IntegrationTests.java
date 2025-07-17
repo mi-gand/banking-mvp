@@ -1,7 +1,9 @@
 
 package ru.outofmemoruguru.integrationtests;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,17 +22,17 @@ import static ru.outofmemoruguru.integrationtests.testdata.JsonTestData.*;
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class StatementMsTest extends AbstractTestContainersPrepare {
+class IntegrationTests extends AbstractTestContainersPrepare {
 
-    private final static Logger log = LoggerFactory.getLogger(StatementMsTest.class);
+    private final static Logger log = LoggerFactory.getLogger(IntegrationTests.class);
 
     private final String URL_OFFERS_STATEMENT;
     private final String URL_SELECT_OFFER_STATEMENT;
 
     private final String URL_STATEMENT;
-    private final String DELETE_STATEMENT_ID = "(?m)\\s*\"statementId\"\\s*:\\s*\"[^\"]*\",?";
+    private final ObjectMapper objectMapper= new ObjectMapper();
 
-    private StatementMsTest() {
+    private IntegrationTests() {
         URL_STATEMENT = "http://localhost:" + statementContainer.getMappedPort(8080);
         URL_OFFERS_STATEMENT = URL_STATEMENT + "/statement/statement";
         URL_SELECT_OFFER_STATEMENT = URL_STATEMENT + "/statement/offer";
@@ -69,13 +71,13 @@ class StatementMsTest extends AbstractTestContainersPrepare {
 
         String actual4LoanOffers = response.body();
 
-        String actual4LoanOffersWithoutId = actual4LoanOffers.replaceAll(DELETE_STATEMENT_ID, "")
-                .replaceAll("\\s+", "");
-        String expected4OffersJsonWithoutId = EXPECTED4_OFFERS_JSON.replaceAll(DELETE_STATEMENT_ID, "")
-                .replaceAll("\\s+", "");
-        System.out.println(dealContainer.getLogs());
-        System.out.println(statementContainer.getLogs());
-        assertEquals(expected4OffersJsonWithoutId, actual4LoanOffersWithoutId);
+        JsonNode actual4Node   = objectMapper.readTree(actual4LoanOffers);
+        JsonNode expected4Node = objectMapper.readTree(EXPECTED4_OFFERS_JSON);
+
+        actual4Node.forEach(x -> ((ObjectNode) x).remove("statementId"));
+        expected4Node.forEach(x -> ((ObjectNode) x).remove("statementId"));
+
+        assertEquals(expected4Node, actual4Node);
 
     }
 

@@ -28,7 +28,7 @@ public class StatementController {
     @Operation(summary = "Получить список предложений",
             description = "Возвращает 4 предварительных кредитных предложения")
     @ApiResponse(responseCode = "200", description = "Список LoanOffer успешно получен")
-    List<LoanOfferDto> forwardToDealMsLoanOffers(@Valid @RequestBody LoanStatementRequestDto requestDto) {
+    List<LoanOfferDto> getLoanOffers(@Valid @RequestBody LoanStatementRequestDto requestDto) {
 
         return statementService.forwardToDealMsLoanOffers(modelMapper.map(requestDto, LoanStatementServiceModel.class))
                 .stream()

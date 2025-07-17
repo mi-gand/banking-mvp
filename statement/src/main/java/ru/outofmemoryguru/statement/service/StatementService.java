@@ -25,8 +25,11 @@ public class StatementService {
     private final String URI_OFFER_SELECT_FROM_DEAL = "/deal/offer/select";
 
     public List<LoanOfferServiceModel> forwardToDealMsLoanOffers(LoanStatementServiceModel requestServiceModel) {
-        return requestLoanOffers(requestServiceModel)
-                .stream()
+        return loanOffersDtoToServiceModel(requestLoanOffers(requestServiceModel));
+    }
+
+    private List<LoanOfferServiceModel> loanOffersDtoToServiceModel(List<LoanOfferDto> loanOffersDto){
+        return loanOffersDto.stream()
                 .map(x -> modelMapper.map(x, LoanOfferServiceModel.class))
                 .toList();
     }
@@ -51,10 +54,6 @@ public class StatementService {
                 .body(modelMapper.map(serviceModel, LoanOfferServiceModel.class))
                 .retrieve()
                 .toBodilessEntity();
-
-        if (!resp.getStatusCode().is2xxSuccessful()){
-            throw new UnsupportedOperationException("Ошибка на стороне Deal: " + resp.getStatusCode());
-        }
     }
 
     public void clientRejectOffer(){
