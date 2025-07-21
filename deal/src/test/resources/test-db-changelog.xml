@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="1-create-schema-deal" author="outofmemoryguru">
+        <sql>CREATE SCHEMA IF NOT EXISTS deal;</sql>
+    </changeSet>
+
+    <changeSet id="2-create-table-client" author="outofmemoryguru">
+        <createTable tableName="client" schemaName="deal">
+            <column name="client_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="middle_name" type="VARCHAR(255)"/>
+            <column name="birth_date" type="DATE"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="gender" type="VARCHAR(32)"/>
+            <column name="marital_status" type="VARCHAR(32)"/>
+            <column name="dependent_amount" type="INTEGER"/>
+            <column name="passport_id" type="jsonb"/>
+            <column name="employment_id" type="jsonb"/>
+            <column name="account_number" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="3-create-table-credit" author="outofmemoryguru">
+        <createTable tableName="credit" schemaName="deal">
+            <column name="credit_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="NUMERIC(19,2)"/>
+            <column name="term" type="INTEGER"/>
+            <column name="monthly_payment" type="NUMERIC(19,2)"/>
+            <column name="rate" type="NUMERIC(10,5)"/>
+            <column name="psk" type="NUMERIC(10,5)"/>
+            <column name="payment_schedule" type="jsonb"/>
+            <column name="salary_client" type="BOOLEAN"/>
+            <column name="credit_status" type="VARCHAR(32)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4-create-table-statement" author="outofmemoryguru">
+        <createTable tableName="statement" schemaName="deal">
+            <column name="statement_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="UUID"/>
+            <column name="credit_id" type="UUID"/>
+            <column name="status" type="VARCHAR(32)"/>
+            <column name="creation_date" type="DATE"/>
+            <column name="applied_offer" type="jsonb"/>
+            <column name="sign_date" type="DATE"/>
+            <column name="status_history" type="jsonb"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5-change-credit-table-dataType" author="outofmemoryguru">
+        <modifyDataType schemaName="deal" tableName="credit" columnName="rate" newDataType="NUMERIC(19,2)"/>
+        <modifyDataType schemaName="deal" tableName="credit" columnName="psk" newDataType="NUMERIC(19,2)"/>
+    </changeSet>
+
+    <changeSet id="6-create-test-values" author="outofmemoryguru">
+        <insert schemaName="deal" tableName="credit">
+            <column name="credit_id" value="cc111111-1111-1111-1111-111111111111"/>
+            <column name="amount" valueNumeric="500000"/>
+            <column name="term" valueNumeric="12"/>
+            <column name="monthly_payment" valueNumeric="56098.40"/>
+            <column name="rate" valueNumeric="26.0"/>
+            <column name="psk" valueNumeric="673180.79"/>
+            <column name="payment_schedule" value='{"number": 1, "date": "2025-07-01", "totalPayment": 56098.40, "interestPayment": 10833.33, "debtPayment": 45265.07, "remainingDebt": 454734.93}'/>
+            <column name="salary_client" valueBoolean="true"/>
+            <column name="credit_status" value="CALCULATED"/>
+        </insert>
+
+        <insert schemaName="deal" tableName="client">
+            <column name="client_id" value="bb111111-1111-1111-1111-111111111111"/>
+            <column name="last_name" value="Ivanov"/>
+            <column name="first_name" value="Ivan"/>
+            <column name="middle_name" value="Ivanovich"/>
+            <column name="birth_date" valueDate="1985-07-15"/>
+            <column name="email" value="ivan@ya.ru"/>
+            <column name="gender" value="MALE"/>
+            <column name="marital_status" value="MARRIED"/>
+            <column name="dependent_amount" valueNumeric="2"/>
+            <column name="passport_id" value='{"number": "567890", "series": "1234", "issue_date": "2005-06-20", "issue_branch": "MVD"}'/>
+            <column name="employment_id" value='{"salary": 80000, "status": "EMPLOYED", "position": "WORKER", "employerInn": "1234567890", "workExperienceTotal": 15, "workExperienceCurrent": 5}'/>
+            <column name="account_number" value="40817810099910004312"/>
+        </insert>
+
+        <insert schemaName="deal" tableName="statement">
+            <column name="statement_id" value="aa111111-1111-1111-1111-111111111111"/>
+            <column name="client_id" value="bb111111-1111-1111-1111-111111111111"/>
+            <column name="credit_id" value="cc111111-1111-1111-1111-111111111111"/>
+            <column name="creation_date" valueDate="2025-06-24"/>
+            <column name="status" value="PREAPPROVAL"/>
+            <column name="status_history" value='[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]'/>
+            <column name="applied_offer" value='{"rate": 26.0, "term": 12, "statementId": "aa111111-1111-1111-1111-111111111111", "totalAmount": 673180.79, "salaryClient": true, "monthlyPayment": 56098.40, "requestedAmount": 500000, "insuranceEnabled": true}'/>
+            <column name="sign_date" value="2025-06-25"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

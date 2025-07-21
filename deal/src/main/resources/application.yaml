@@ -3,12 +3,12 @@ spring:
     name:  deal
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/banking?currentSchema=deal
-    username: user
-    password: password
+    url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/banking?currentSchema=deal}
+    username: ${DATASOURCE_USERNAME:user}
+    password: ${DATASOURCE_PASSWORD:password}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
@@ -19,6 +19,10 @@ spring:
         logging:
           level:
             org.hibernate.type.descriptor.sql: trace
+  liquibase:
+    change-log: db-changelog.xml
+    enabled: true
+    default-schema: liquibase_data
 
 
 
@@ -43,4 +47,4 @@ logbook:
       - X-Secret
 
 calculator:
-  base-url: http://calculator:8080
+  base-url: ${CALCULATOR_BASE_URL:http://calculator:8080}
