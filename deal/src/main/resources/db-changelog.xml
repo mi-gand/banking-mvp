@@ -124,4 +124,17 @@
         </insert>
     </changeSet>
 
+    <changeSet id="7-create-schema-for-kafka" author="outofmemoryguru">
+        <sql>CREATE SCHEMA IF NOT EXISTS kafka;</sql>
+    </changeSet>
+
+    <changeSet id="8-create-DB-for-kafka" author="outofmemoryguru" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM pg_database WHERE datname = 'user'
+            </sqlCheck>
+        </preConditions>
+        <sql>CREATE DATABASE "user";</sql>
+    </changeSet>
+
 </databaseChangeLog>
