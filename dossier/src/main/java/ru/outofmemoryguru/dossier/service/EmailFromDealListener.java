@@ -13,21 +13,26 @@ public class EmailFromDealListener {
 
     @KafkaListener(
             topics = {
-                    SEND_DOCUMENTS,
-                    CREATE_DOCUMENTS,
-                    CREDIT_ISSUED,
                     FINISH_REGISTRATION,
+                    CREATE_DOCUMENTS,
+                    SEND_DOCUMENTS,
                     SEND_SES,
-                    STATEMENT_DENIED,
+                    CREDIT_ISSUED
             },
             groupId = "email"
     )
     public void handleEvent(EmailMessageDto dto) {
         switch (dto.getEventType()) {
-            case "send-documents" -> log.info
-                    ("я нахожусь в EmailFromDealListener -> send-documents. Отловил DTO: {}", dto);
-            case "create-documents" -> log.info
-                    ("я нахожусь в EmailFromDealListener -> create-documents. Отловил DTO: {}", dto);
+            case FINISH_REGISTRATION -> log.info
+                    ("я нахожусь в EmailFromDealListener -> FINISH_REGISTRATION. Отловил DTO: {}", dto);
+            case CREATE_DOCUMENTS -> log.info
+                    ("я нахожусь в EmailFromDealListener -> CREATE_DOCUMENTS. Отловил DTO: {}", dto);
+            case SEND_DOCUMENTS -> log.info
+                    ("я нахожусь в EmailFromDealListener -> SEND_DOCUMENTS. Отловил DTO: {}", dto);
+            case SEND_SES -> log.info
+                    ("я нахожусь в EmailFromDealListener -> SEND_SES. Отловил DTO: {}", dto);
+            case CREDIT_ISSUED -> log.info
+                    ("я нахожусь в EmailFromDealListener -> CREDIT_ISSUED. Отловил DTO: {}", dto);
         }
     }
 }

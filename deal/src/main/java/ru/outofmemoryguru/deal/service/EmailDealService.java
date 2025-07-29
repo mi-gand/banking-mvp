@@ -38,6 +38,4 @@ public class EmailDealService {
         log.info("Отправляю в кафку: {} \n", emailMessageDto);
         kafkaTemplate.send(topic, emailMessageDto);
     }
-
-
 }

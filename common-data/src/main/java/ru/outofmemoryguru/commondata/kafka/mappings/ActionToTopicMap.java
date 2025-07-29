@@ -3,18 +3,18 @@ package ru.outofmemoryguru.commondata.kafka.mappings;
 import java.util.Map;
 
 public class ActionToTopicMap {
-    public static final String SEND_DOCUMENTS = "send-documents";
-    public static final String CREATE_DOCUMENTS = "create-documents";
-    public static final String CREDIT_ISSUED = "credit-issued";
     public static final String FINISH_REGISTRATION = "finish-registration";
+    public static final String CREATE_DOCUMENTS = "create-documents";
+    public static final String SEND_DOCUMENTS = "send-documents";
     public static final String SEND_SES = "send-ses";
-    public static final String STATEMENT_DENIED = "statement-denied";
+    public static final String CREDIT_ISSUED = "credit-issued";
 
     private static final Map<String, String> ACTION_TO_TOPIC = Map.of(
+            "finishreg",FINISH_REGISTRATION,
+            "create", CREATE_DOCUMENTS,
             "send", SEND_DOCUMENTS,
-            "sign", CREATE_DOCUMENTS,
-            "code", CREDIT_ISSUED
-            //тут еще 3 штуки надо
+            "sign", SEND_SES,
+            "credit", CREDIT_ISSUED
     );
 
     private ActionToTopicMap() {

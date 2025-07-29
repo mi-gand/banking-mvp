@@ -34,6 +34,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import static ru.outofmemoryguru.commondata.kafka.mappings.ActionToTopicMap.CREATE_DOCUMENTS;
+import static ru.outofmemoryguru.commondata.kafka.mappings.ActionToTopicMap.FINISH_REGISTRATION;
 import static ru.outofmemoryguru.deal.model.enumdata.ApplicationStatus.APPROVED;
 import static ru.outofmemoryguru.deal.model.enumdata.ApplicationStatus.PREAPPROVAL;
 import static ru.outofmemoryguru.deal.model.enumdata.ChangeType.AUTOMATIC;
@@ -48,6 +50,7 @@ public class DealService {
     private final StatementRepository statementRepository;
     private final CreditRepository creditRepository;
     private final RestClient restClient;
+    private final EmailDealService emailDealService;
     private final ModelMapper modelMapper;
     private final String URI_OFFERS_FROM_CALCULATOR = "/calculator/offers";
     private final String URI_CALC_FROM_CALCULATOR = "/calculator/draft-calc";
@@ -141,6 +144,7 @@ public class DealService {
                 .orElseThrow(() -> new EntityNotFoundException("Statement id " + to.getStatementId() + " not found"));
 
         statementRepository.save(updateStatusHistoryStatement(statement, APPROVED, MANUAL));
+        emailDealService.sendToKafka(statement.getStatementId().toString(), FINISH_REGISTRATION);
     }
 
     private Statement updateStatusHistoryStatement(Statement statement, ApplicationStatus status, ChangeType changeType) {
@@ -169,6 +173,7 @@ public class DealService {
 
         statementRepository.save(updateStatusHistoryStatement(statement, APPROVED, AUTOMATIC));
         log.info("Statement status set to APPROVED for statementId={}", statementId);
+        emailDealService.sendToKafka(statementId, CREATE_DOCUMENTS);
     }
 
     private ScoringDataServiceModel saturateScoringData(FinishRegistrationServiceModel to, Statement statement) {
