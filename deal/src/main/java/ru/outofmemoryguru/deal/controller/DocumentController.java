@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import ru.outofmemoryguru.deal.service.EmailDealService;
-
-import java.util.Map;
+import ru.outofmemoryguru.commondata.kafka.mappings.ActionToTopicMap;
 
 @RestController
 @RequestMapping("/deal/document")
@@ -20,11 +19,6 @@ import java.util.Map;
 public class DocumentController {
 
     private final EmailDealService emailDealService;
-    private static final Map<String, String> ACTION_TO_TOPIC = Map.of(
-            "send", "send-documents",
-            "sign", "create-documents",
-            "code", "credit-issued"
-    );
 
     @PostMapping("{statementId}/{action}")
     public void sendToKafka(@PathVariable("statementId")
@@ -34,9 +28,9 @@ public class DocumentController {
                                     message = "Invalid UUID format"
                             ) String statementId,
                             @PathVariable("action") String action) {
-        if (!ACTION_TO_TOPIC.containsKey(action)) {
+        if (!ActionToTopicMap.getActionsForTopics().containsKey(action)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "недопустимый путь");
         }
-        emailDealService.sendToKafka(statementId, ACTION_TO_TOPIC.get(action));
+        emailDealService.sendToKafka(statementId, ActionToTopicMap.getTopic(action));
     }
 }

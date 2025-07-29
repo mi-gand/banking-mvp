@@ -30,7 +30,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     properties:
-      spring.json.trusted.packages: "ru.outofmemoryguru.commondata.dto"
+      spring.json.trusted.packages: "ru.outofmemoryguru.commondata.kafka.dto"
 
 
 server:

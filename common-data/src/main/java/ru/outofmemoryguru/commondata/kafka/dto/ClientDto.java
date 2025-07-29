@@ -1,4 +1,4 @@
-package ru.outofmemoryguru.commondata.dto;
+package ru.outofmemoryguru.commondata.kafka.dto;
 
 import lombok.Data;
 

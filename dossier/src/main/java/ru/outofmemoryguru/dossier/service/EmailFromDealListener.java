@@ -3,7 +3,9 @@ package ru.outofmemoryguru.dossier.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import ru.outofmemoryguru.commondata.dto.EmailMessageDto;
+import ru.outofmemoryguru.commondata.kafka.dto.EmailMessageDto;
+
+import static ru.outofmemoryguru.commondata.kafka.mappings.ActionToTopicMap.*;
 
 @Slf4j
 @Service
@@ -11,12 +13,12 @@ public class EmailFromDealListener {
 
     @KafkaListener(
             topics = {
-                    "finish-registration",
-                    "create-documents",
-                    "send-documents",
-                    "send-ses",
-                    "credit-issued",
-                    "statement-denied"
+                    SEND_DOCUMENTS,
+                    CREATE_DOCUMENTS,
+                    CREDIT_ISSUED,
+                    FINISH_REGISTRATION,
+                    SEND_SES,
+                    STATEMENT_DENIED,
             },
             groupId = "email"
     )
