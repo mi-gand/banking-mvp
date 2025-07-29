@@ -35,3 +35,5 @@ build/
 
 patch/
 pgdata/
+
+/dossier/autorisationMail.properties
