@@ -36,10 +36,7 @@ import java.util.UUID;
 
 import static ru.outofmemoryguru.commondata.kafka.mappings.ActionToTopicMap.CREATE_DOCUMENTS;
 import static ru.outofmemoryguru.commondata.kafka.mappings.ActionToTopicMap.FINISH_REGISTRATION;
-import static ru.outofmemoryguru.deal.model.enumdata.ApplicationStatus.APPROVED;
 import static ru.outofmemoryguru.deal.model.enumdata.ApplicationStatus.PREAPPROVAL;
-import static ru.outofmemoryguru.deal.model.enumdata.ChangeType.AUTOMATIC;
-import static ru.outofmemoryguru.deal.model.enumdata.ChangeType.MANUAL;
 import static ru.outofmemoryguru.deal.model.enumdata.CreditStatus.CALCULATED;
 
 @Service
@@ -143,11 +140,10 @@ public class DealService {
         Statement statement = statementRepository.findById(to.getStatementId())
                 .orElseThrow(() -> new EntityNotFoundException("Statement id " + to.getStatementId() + " not found"));
 
-        statementRepository.save(updateStatusHistoryStatement(statement, APPROVED, MANUAL));
         emailDealService.sendToKafka(statement.getStatementId().toString(), FINISH_REGISTRATION);
     }
 
-    private Statement updateStatusHistoryStatement(Statement statement, ApplicationStatus status, ChangeType changeType) {
+    private Statement updateStatusAndHistoryStatement(Statement statement, ApplicationStatus status, ChangeType changeType) {
         StatusHistory updatedStatusHistory = new StatusHistory();
         statement.setStatus(status);
         updatedStatusHistory.setTime(LocalDateTime.now());
@@ -164,14 +160,12 @@ public class DealService {
 
         ScoringDataServiceModel scoringDataServiceModel = saturateScoringData(to, statement);
 
-        log.info("Request to calculator: {}", scoringDataServiceModel);
         Credit newCredit = calculateCreditFromMsCalculator(scoringDataServiceModel);
-        log.info("Response from calculator: {}", newCredit);
-        newCredit.setCredit_id(UUID.randomUUID());
-        creditRepository.save(newCredit);
-        statement.setStatus(APPROVED);
 
-        statementRepository.save(updateStatusHistoryStatement(statement, APPROVED, AUTOMATIC));
+        newCredit.setCredit_id(UUID.randomUUID());
+        newCredit.setCreditStatus(CALCULATED);
+        creditRepository.save(newCredit);
+
         log.info("Statement status set to APPROVED for statementId={}", statementId);
         emailDealService.sendToKafka(statementId, CREATE_DOCUMENTS);
     }
