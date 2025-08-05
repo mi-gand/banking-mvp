@@ -4,13 +4,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.outofmemoryguru.deal.service.EmailDealService;
 import ru.outofmemoryguru.commondata.kafka.mappings.ActionToTopicMap;
+import ru.outofmemoryguru.deal.controller.dto.JsonFromUiDto;
+import ru.outofmemoryguru.deal.service.EmailDealService;
 
 @RestController
 @RequestMapping("/deal/document")
@@ -33,4 +31,20 @@ public class DocumentController {
         }
         emailDealService.sendToKafka(statementId, ActionToTopicMap.getTopic(action));
     }
+
+    @PostMapping("{statementId}/{action}/code")
+    public void sendToKafkaCode(@PathVariable("statementId")
+                                @Pattern(
+                                        regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]" +
+                                                "{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+                                        message = "Invalid UUID format"
+                                ) String statementId,
+                                @PathVariable("action") String action,
+                                @RequestBody(required = false) JsonFromUiDto body) {
+        if (!ActionToTopicMap.getActionsForTopics().containsKey(action)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "недопустимый путь");
+        }
+        emailDealService.sendToKafka(statementId, ActionToTopicMap.getTopic(action), body);
+    }
+
 }

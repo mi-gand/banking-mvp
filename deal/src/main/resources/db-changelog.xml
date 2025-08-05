@@ -137,4 +137,15 @@
         <sql>CREATE DATABASE "user";</sql>
     </changeSet>
 
+    <changeSet id="9-create-sescode-statement-value" author="outofmemoryguru">
+        <addColumn schemaName="deal" tableName="statement">
+            <column name="ses_code" type="VARCHAR(32)"/>
+        </addColumn>
+        <update schemaName="deal" tableName="statement">
+            <column name="ses_code" value="1234"/>
+            <where> statement_id= 'aa111111-1111-1111-1111-111111111111' </where>
+        </update>
+    </changeSet>
+
+
 </databaseChangeLog>

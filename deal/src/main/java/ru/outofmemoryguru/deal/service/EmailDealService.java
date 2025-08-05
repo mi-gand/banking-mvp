@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.outofmemoryguru.commondata.kafka.dto.ClientDto;
 import ru.outofmemoryguru.commondata.kafka.dto.EmailMessageDto;
+import ru.outofmemoryguru.deal.controller.dto.JsonFromUiDto;
 import ru.outofmemoryguru.deal.model.Client;
 import ru.outofmemoryguru.deal.model.Statement;
 import ru.outofmemoryguru.deal.model.enumdata.ApplicationStatus;
@@ -47,17 +50,44 @@ public class EmailDealService {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new EntityNotFoundException("Client id " + clientId + " not found"));
 
+        String sesCode = null;
         if (topic.equals(SEND_SES)) {
-            System.out.println("Заглушка. Произошла секьюрная логика");
+            sesCode = String.valueOf((int) (Math.random() * 9000) + 1000);
+            statement.setSesCode(sesCode);
         } else {
             setStatementStatusAndHistory(statement, topic);
         }
+        statementRepository.save(statement);
 
         EmailMessageDto emailMessageDto = new EmailMessageDto(statementId, topic,
-                objectMapper.convertValue(client, ClientDto.class));
+                objectMapper.convertValue(client, ClientDto.class), sesCode);
         log.info("Топик в кафку: {} \n", topic);
         log.info("Отправляю в кафку: {} \n", emailMessageDto);
         kafkaTemplate.send(topic, emailMessageDto);
+    }
+
+    public void sendToKafka(String statementId, String topic, JsonFromUiDto body) {
+
+        Statement statement = statementRepository.findById(UUID.fromString(statementId))
+                .orElseThrow(() -> new EntityNotFoundException("Statement id " + statementId + " not found"));
+
+        UUID clientId = statement.getClientId();
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new EntityNotFoundException("Client id " + clientId + " not found"));
+
+
+        if (!statement.getSesCode().equals(body.getSesCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Неправильный SES code, брутфорьс дальше");
+        }
+
+        statementRepository.save(statement);
+
+        EmailMessageDto emailMessageDto = new EmailMessageDto(statementId, topic,
+                objectMapper.convertValue(client, ClientDto.class), body.getSesCode());
+        log.info("Топик в кафку: {} \n", topic);
+        log.info("Отправляю в кафку: {} \n", emailMessageDto);
+        kafkaTemplate.send(topic, emailMessageDto);
+
     }
 
     private void setStatementStatusAndHistory(Statement statement, String topic) {

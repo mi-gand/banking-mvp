@@ -50,7 +50,7 @@ public class EmailFromDealListener {
                 log.info("я нахожусь в EmailFromDealListener -> SEND_DOCUMENTS. Отловил DTO: {}", dto);
             }
             case SEND_SES -> {
-                sendEmail(mail, SEND_SES, "Подпишите документы");
+                sendEmail(mail, SEND_SES, "Ваш код для подписи: " + dto.getSesCode());
                 log.info("я нахожусь в EmailFromDealListener -> SEND_SES. Отловил DTO: {}", dto);
             }
             case CREDIT_ISSUED -> {

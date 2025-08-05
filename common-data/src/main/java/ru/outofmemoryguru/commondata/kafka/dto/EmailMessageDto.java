@@ -11,4 +11,5 @@ public class EmailMessageDto {
     private String statementId;
     private String eventType;
     private ClientDto client;
+    private String sesCode;
 }
