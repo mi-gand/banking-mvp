@@ -35,6 +35,8 @@
         <module>deal</module>
         <module>statement</module>
         <module>integration-tests</module>
+        <module>dossier</module>
+        <module>common-data</module>
     </modules>
 
     <build>

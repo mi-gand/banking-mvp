@@ -1,0 +1,31 @@
+package ru.outofmemoryguru.commondata.kafka.mappings;
+
+import java.util.Map;
+
+public class ActionToTopicMap {
+    public static final String FINISH_REGISTRATION = "finish-registration";
+    public static final String CREATE_DOCUMENTS = "create-documents";
+    public static final String SEND_DOCUMENTS = "send-documents";
+    public static final String SEND_SES = "send-ses";
+    public static final String CREDIT_ISSUED = "credit-issued";
+
+    private static final Map<String, String> ACTION_TO_TOPIC = Map.of(
+            "finishreg",FINISH_REGISTRATION,
+            "create", CREATE_DOCUMENTS,
+            "send", SEND_DOCUMENTS,
+            "sign", SEND_SES,
+            "credit", CREDIT_ISSUED
+    );
+
+    private ActionToTopicMap() {
+    }
+
+    public static Map<String, String> getActionsForTopics() {
+        return ACTION_TO_TOPIC;
+    }
+
+    public static String getTopic(String action) {
+        return ACTION_TO_TOPIC.get(action);
+    }
+
+}

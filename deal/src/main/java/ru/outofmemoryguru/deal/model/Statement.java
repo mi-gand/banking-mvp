@@ -38,5 +38,5 @@ public class Statement {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<StatusHistory> statusHistory;
-
+    private String sesCode;
 }

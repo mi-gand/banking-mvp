@@ -2,12 +2,16 @@ package ru.outofmemoryguru.deal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.outofmemoryguru.commondata.kafka.dto.EmailMessageDto;
 import ru.outofmemoryguru.deal.AbstractContainerPostgres;
 import ru.outofmemoryguru.deal.controller.dto.LoanOfferDto;
 import ru.outofmemoryguru.deal.model.Statement;
@@ -16,19 +20,21 @@ import ru.outofmemoryguru.deal.model.jsonb.StatusHistory;
 import ru.outofmemoryguru.deal.repository.StatementRepository;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.outofmemoryguru.deal.testdata.DtoTestData.*;
 
 
 @AutoConfigureMockMvc
-
 @SpringBootTest
 public class DealControllerTest extends AbstractContainerPostgres {
 
@@ -38,6 +44,9 @@ public class DealControllerTest extends AbstractContainerPostgres {
     private ObjectMapper objectMapper;
     @Autowired
     private StatementRepository statementRepository;
+    @SuppressWarnings("removal")
+    @MockBean
+    private KafkaTemplate<String, EmailMessageDto> kafkaTemplate;
 
     private static final String DEAL_STATEMENT = "/deal/statement";
     private static final String DEAL_OFFER_SELECT = "/deal/offer/select";
@@ -71,6 +80,10 @@ public class DealControllerTest extends AbstractContainerPostgres {
 
     @Test
     void selectOffer() throws Exception {
+
+        Mockito.when(kafkaTemplate.send(anyString(), any(EmailMessageDto.class)))
+                .thenReturn(CompletableFuture.completedFuture(null));
+
         List<StatusHistory> previousStatusHistory = statementForDtoTest.getStatusHistory();
 
         statementRepository.save(statementForDtoTest);
@@ -94,6 +107,8 @@ public class DealControllerTest extends AbstractContainerPostgres {
     @Test
     @Sql(scripts = "classpath:data.sql")
     void creditFinalCalculation() throws Exception {
+        Mockito.when(kafkaTemplate.send(anyString(), any(EmailMessageDto.class)))
+                .thenReturn(CompletableFuture.completedFuture(null));
         setupWireMockCalculate();
         mockMvc.perform(post(DEAL_CALCULATE, statementForDtoTest.getStatementId())
                         .contentType(MediaType.APPLICATION_JSON)
