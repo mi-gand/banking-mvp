@@ -16,6 +16,7 @@ import ru.outofmemoryguru.deal.model.Credit;
 import ru.outofmemoryguru.deal.model.Statement;
 import ru.outofmemoryguru.deal.model.enumdata.ApplicationStatus;
 import ru.outofmemoryguru.deal.model.enumdata.ChangeType;
+import ru.outofmemoryguru.deal.model.jsonb.AppliedOffer;
 import ru.outofmemoryguru.deal.model.jsonb.Employment;
 import ru.outofmemoryguru.deal.model.jsonb.Passport;
 import ru.outofmemoryguru.deal.model.jsonb.StatusHistory;
@@ -139,7 +140,8 @@ public class DealService {
     public void selectOffer(LoanOfferServiceModel to) {
         Statement statement = statementRepository.findById(to.getStatementId())
                 .orElseThrow(() -> new EntityNotFoundException("Statement id " + to.getStatementId() + " not found"));
-
+        statement.setAppliedOffer(modelMapper.map(to, AppliedOffer.class));
+        statementRepository.save(statement);
         emailDealService.sendToKafka(statement.getStatementId().toString(), FINISH_REGISTRATION);
     }
 

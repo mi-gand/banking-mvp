@@ -1,0 +1,64 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+          # MS-Statement
+          # 1) POST /statement -> POST /statement/statement
+          - id: post-statement
+            uri: http://statement:8080
+            predicates:
+              - Path=/statement
+              - Method=POST
+            filters:
+              - RewritePath=/statement,/statement/statement
+
+          # 2) POST /statement/select -> POST /statement/offer
+          - id: post-statement-select
+            uri: http://statement:8080
+            predicates:
+              - Path=/statement/select
+              - Method=POST
+            filters:
+              - RewritePath=/statement/select,/statement/offer
+
+          # MS-Deal
+          # 3) POST /statement/registration/{id} -> POST /deal/calculate/{id}
+          - id: post-calculate
+            uri: http://deal:8080
+            predicates:
+              - Path=/statement/registration/*
+              - Method=POST
+            filters:
+              - RewritePath=/statement/registration/(?<id>.*),/deal/calculate/${id}
+
+          # 4) POST /document/{id} -> POST /deal/document/{id}/send
+          - id: post-send-doc
+            uri: http://deal:8080
+            predicates:
+              - Path=/document/*
+              - Method=POST
+            filters:
+              - RewritePath=/document/(?<id>.*),/deal/document/${id}/send
+
+          # 5) POST /document/{id}/sign ->POST /deal/document/{id}/sign
+          - id: post-sign-doc
+            uri: http://deal:8080
+            predicates:
+              - Path=/document/*/sign
+              - Method=POST
+            filters:
+              - RewritePath=/document/(?<id>.*)/sign,/deal/document/${id}/sign
+
+          # 6) POST /document/{id}/sign/code-> POST /deal/document/{id}/sign/code
+          - id: post-sign-code
+            uri: http://deal:8080
+            predicates:
+              - Path=/document/*/sign/code
+              - Method=POST
+            filters:
+              - RewritePath=/document/(?<id>.*)/sign/code,/deal/document/${id}/sign/code
