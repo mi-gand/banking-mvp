@@ -9,6 +9,7 @@ import ru.outofmemoryguru.deal.model.enumdata.CreditStatus;
 import ru.outofmemoryguru.deal.model.jsonb.PaymentSchedule;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +29,7 @@ public class Credit {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "payment_schedule", columnDefinition = "jsonb")
-    private PaymentSchedule paymentSchedule;
+    private List<PaymentSchedule> paymentSchedule;
 
     private boolean salaryClient;
     @Enumerated(EnumType.STRING)

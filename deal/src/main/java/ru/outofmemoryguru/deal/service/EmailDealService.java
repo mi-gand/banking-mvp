@@ -19,6 +19,7 @@ import ru.outofmemoryguru.deal.model.jsonb.StatusHistory;
 import ru.outofmemoryguru.deal.repository.ClientRepository;
 import ru.outofmemoryguru.deal.repository.StatementRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class EmailDealService {
         if (!statement.getSesCode().equals(body.getSesCode())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Неправильный SES code, брутфорьс дальше");
         }
-
+        statement.setSignDate(LocalDate.now());
         statementRepository.save(statement);
 
         EmailMessageDto emailMessageDto = new EmailMessageDto(statementId, topic,

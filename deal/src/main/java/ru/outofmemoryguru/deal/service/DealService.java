@@ -80,7 +80,8 @@ public class DealService {
         client.setEmail(requestDto.getEmail());
         client.setGender(null);
         client.setMaritalStatus(null);
-        client.setDependentAmount(null);
+        client.setDependentAmount(requestDto.getAmount().intValue());
+        client.setBirthDate(requestDto.getBirthdate());
 
         Passport passport = new Passport();
         passport.setNumber(requestDto.getPassportNumber());
@@ -158,24 +159,37 @@ public class DealService {
     //@PostMapping("/calculate/{statementId}")
     public void creditFinalCalculation(FinishRegistrationServiceModel to, String statementId) {
         Statement statement = statementRepository.findById(UUID.fromString(statementId))
-                .orElseThrow(() -> new EntityNotFoundException("Statement id " + statementId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Statement id " + statementId +
+                        " not found"));
 
-        ScoringDataServiceModel scoringDataServiceModel = saturateScoringData(to, statement);
+        Client client = clientRepository.findById(statement.getClientId())
+                .orElseThrow(() -> new EntityNotFoundException("Client id " + statement.getClientId() +
+                        " not found"));
+        client.setGender(to.getGender());
+        client.setMaritalStatus(to.getMaritalStatus());
+        client.setDependentAmount(to.getDependentAmount());
+        client.setAccountNumber(to.getAccountNumber());
+        client.setEmploymentId(modelMapper.map(to.getEmployment(), Employment.class));
+        client.getPassportId().setIssue_date(to.getPassportIssueDate());
+        client.getPassportId().setIssue_branch(to.getPassportIssueBranch());
+
+        ScoringDataServiceModel scoringDataServiceModel = saturateScoringData(to, statement, client);
 
         Credit newCredit = calculateCreditFromMsCalculator(scoringDataServiceModel);
 
         newCredit.setCredit_id(UUID.randomUUID());
         newCredit.setCreditStatus(CALCULATED);
+        statement.setCreditId(newCredit.getCredit_id());
         creditRepository.save(newCredit);
+        clientRepository.save(client);
 
         log.info("Statement status set to APPROVED for statementId={}", statementId);
         emailDealService.sendToKafka(statementId, CREATE_DOCUMENTS);
     }
 
-    private ScoringDataServiceModel saturateScoringData(FinishRegistrationServiceModel to, Statement statement) {
+    private ScoringDataServiceModel saturateScoringData(FinishRegistrationServiceModel to,
+                                                        Statement statement, Client client) {
         ScoringDataServiceModel scoringDataServiceModel = new ScoringDataServiceModel();
-        Client client = clientRepository.findById(statement.getClientId())
-                .orElseThrow(() -> new EntityNotFoundException("Client id " + statement.getClientId() + " not found"));
 
         scoringDataServiceModel.setFirstName(client.getFirstName());
         scoringDataServiceModel.setLastName(client.getLastName());

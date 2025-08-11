@@ -14,6 +14,6 @@ public class AdminDealService {
     private final StatementRepository statementRepository;
 
     public List<StatementAdminDto> getStatement(UUID statementId) {
-        return statementRepository.findAndCreateStatementAdminDto(statementId);
+        return statementRepository.findStatementAdminDtoByIdOrAll(statementId);
     }
 }

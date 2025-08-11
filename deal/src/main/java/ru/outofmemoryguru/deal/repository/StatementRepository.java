@@ -30,6 +30,6 @@ public interface StatementRepository extends JpaRepository<Statement, UUID> {
             left join Credit credit on credit.credit_id  = statement.creditId
             where (:id is null or statement.statementId = :id)
             """)
-    List<StatementAdminDto> findAndCreateStatementAdminDto(@Param("id") UUID id);
+    List<StatementAdminDto> findStatementAdminDtoByIdOrAll(@Param("id") UUID id);
 
 }
