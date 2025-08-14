@@ -37,6 +37,7 @@
         <module>integration-tests</module>
         <module>dossier</module>
         <module>common-data</module>
+        <module>gateway</module>
     </modules>
 
     <build>

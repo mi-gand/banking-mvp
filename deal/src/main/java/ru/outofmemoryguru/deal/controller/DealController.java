@@ -13,10 +13,13 @@ import ru.outofmemoryguru.deal.controller.converter.loanStatement.LoanStatementC
 import ru.outofmemoryguru.deal.controller.dto.FinishRegistrationRequestDto;
 import ru.outofmemoryguru.deal.controller.dto.LoanOfferDto;
 import ru.outofmemoryguru.deal.controller.dto.LoanStatementRequestDto;
+import ru.outofmemoryguru.deal.controller.dto.StatementAdminDto;
+import ru.outofmemoryguru.deal.service.AdminDealService;
 import ru.outofmemoryguru.deal.service.DealService;
 import ru.outofmemoryguru.deal.service.to.FinishRegistrationServiceModel;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/deal")
@@ -28,6 +31,7 @@ import java.util.List;
 public class DealController {
     private final DealService dealService;
     private final LoanStatementConverter loanStatementConverter;
+    private final AdminDealService adminDealService;
     private final LoanOfferConverter loanOfferConverter = new LoanOfferConverter();
     private final ModelMapper modelMapper;
 
@@ -63,9 +67,13 @@ public class DealController {
                                         regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]" +
                                                 "{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                                         message = "Invalid UUID format"
-                                )String statementId) {
+                                ) String statementId) {
         FinishRegistrationServiceModel model = modelMapper.map(requestDto, FinishRegistrationServiceModel.class);
         dealService.creditFinalCalculation(model, statementId);
+    }
 
+    @GetMapping({"/admin/statement", "/admin/statement/{statementId}"})
+    List<StatementAdminDto> adminInfo(@PathVariable(name = "statementId", required = false) UUID statementId) {
+        return adminDealService.getStatement(statementId);
     }
 }
