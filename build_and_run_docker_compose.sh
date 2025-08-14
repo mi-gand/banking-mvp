@@ -45,6 +45,6 @@ else
   echo "Kafka инициализирована"
 fi
 
-mvn clean package -pl '!integration-tests'
+mvn clean verify -pl '!integration-tests'
 docker compose up --build -d
 read -p "Press Enter to exit"
