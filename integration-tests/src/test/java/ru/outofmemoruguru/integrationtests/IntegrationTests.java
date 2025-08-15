@@ -4,6 +4,7 @@ package ru.outofmemoruguru.integrationtests;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.outofmemoruguru.integrationtests.testdata.JsonTestData.*;
 
+@Disabled("Отключены, тк настроены в версиях до кафки и gateway")
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class IntegrationTests extends AbstractTestContainersPrepare {

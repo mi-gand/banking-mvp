@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build-and-test:
+  build-and-analise:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,54 +18,26 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
-      - name: Build and run tests
-        run: mvn clean verify -B -pl ,!integration-tests
+      - name: Build, tests, aggregate coverage
+        run: |
+          mvn clean verify -B
+          mvn -pl report jacoco:report-aggregate -B
 
-      - name: Upload JaCoCo report
+      - name: Upload coverage to codecov
         uses: actions/upload-artifact@v4
         with:
-          name: jacoco-report
-          path: target/site/jacoco
-
-  codecov:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download JaCoCo report
-        uses: actions/download-artifact@v4
-        with:
-          name: jacoco-report
-          path: target/site/jacoco
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
           token: ${{secrets.CODECOV_TOKEN}}
-          files: target/site/jacoco/jacoco.xml
+          files: report/target/site/jacoco/jacoco.xml
           fail_ci_if_error: true
 
-  sonarcloud:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: '21'
-          cache: maven
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5
+      - name: Sonarcloud analise
         env:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-        with:
-          args: >
-            -Dsonar.projectKey=mi-gand_banking-mvp
-            -Dsonar.organization=mi-gand
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-            -Dsonar.login=${{env.SONAR_TOKEN}}
+        run: |
+          mvn sonar:sonar \
+            -Dsonar.projectKey=mi-gand_banking-mvp \
+            -Dsonar.organization=mi-gand \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{env.SONAR_TOKEN}} \
+            -Dsonar.coverage.jacoco.xmlReportPaths=report/target/site/jacoco/jacoco.xml
+
