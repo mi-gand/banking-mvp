@@ -27,7 +27,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
-          files: report/target/site/jacoco/jacoco.xml
+          files: report/target/site/jacoco-aggregate/jacoco.xml
           fail_ci_if_error: true
 
       - name: Sonarcloud analise
@@ -39,5 +39,5 @@ jobs:
             -Dsonar.organization=mi-gand \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{env.SONAR_TOKEN}} \
-            -Dsonar.coverage.jacoco.xmlReportPaths=report/target/site/jacoco/jacoco.xml
+            -Dsonar.coverage.jacoco.xmlReportPaths=report/target/site/jacoco-aggregate/jacoco.xml
 
