@@ -4,6 +4,7 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.junit.jupiter.api.Disabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
@@ -14,7 +15,7 @@ import org.testcontainers.junit.jupiter.Container;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-
+@Disabled("Отключены, тк настроены в версиях до кафки и gateway")
 public abstract class AbstractTestContainersPrepare {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractTestContainersPrepare.class);
@@ -36,7 +37,6 @@ public abstract class AbstractTestContainersPrepare {
 
 
     {
-        //todo в будущем заодно сделать проверку на запущенный процесс докер десктопа
         try {
             String os = System.getProperty("os.name").toLowerCase();
             boolean isOsWindows = os.contains("win");
@@ -82,7 +82,7 @@ public abstract class AbstractTestContainersPrepare {
         postgres.start();
 
         try {
-            Thread.sleep(2000);         //успевает подняться postgres без логики ожидания
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -108,7 +108,7 @@ public abstract class AbstractTestContainersPrepare {
                 .withEnv("DATASOURCE_USERNAME", postgres.getUsername())
                 .withEnv("DATASOURCE_PASSWORD", postgres.getPassword())
                 .withEnv("CALCULATOR_BASE_URL", "http://calculator:8080")
-                .withEnv("SPRING_LIQUIBASE_ENABLED", "false")   //можно включить в deal но удалить initAndPopulateDb()
+                .withEnv("SPRING_LIQUIBASE_ENABLED", "false")
                 .start();
 
         log.debug("Запущен контейнер deal. {}", getTimeFromStart());

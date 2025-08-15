@@ -4,43 +4,6 @@ TRUNCATE TABLE deal.client CASCADE ;
 TRUNCATE TABLE deal.credit CASCADE ;
 TRUNCATE TABLE deal.statement CASCADE ;
 
---Statements
-INSERT INTO deal.statement (statement_id, client_id, creation_date, credit_id, status, status_history, applied_offer, sign_date)
-VALUES ('aa111111-1111-1111-1111-111111111111', 'bb111111-1111-1111-1111-111111111111', '2025-06-24', 'cc111111-1111-1111-1111-111111111111',
-        'PREAPPROVAL', '[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]', '{
-    "rate": 26.0,
-    "term": 12,
-    "statementId": "aa111111-1111-1111-1111-111111111111",
-    "totalAmount": 673180.79,
-    "salaryClient": true,
-    "monthlyPayment": 56098.40,
-    "requestedAmount": 500000,
-    "insuranceEnabled": true
-  }', null),
-       ('aa222222-2222-2222-2222-222222222222', 'bb222222-2222-2222-2222-222222222222', '2025-06-24', 'cc222222-2222-2222-2222-222222222222',
-        'PREAPPROVAL', '[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]', '{
-         "rate": 27.0,
-         "term": 12,
-         "statementId": "aa222222-2222-2222-2222-222222222222",
-         "totalAmount": 676104.37,
-         "salaryClient": false,
-         "monthlyPayment": 56342.03,
-         "requestedAmount": 500000,
-         "insuranceEnabled": true
-       }', null),
-       ('aa333333-3333-3333-3333-333333333333', 'bb333333-3333-3333-3333-333333333333', '2025-06-24', 'cc333333-3333-3333-3333-333333333333',
-        'PREAPPROVAL', '[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]', '{
-         "rate": 29.0,
-         "term": 12,
-         "statementId": "aa333333-3333-3333-3333-333333333333",
-         "totalAmount": 581975.39,
-         "salaryClient": true,
-         "monthlyPayment": 48497.95,
-         "requestedAmount": 500000,
-         "insuranceEnabled": false
-       }', null);
-
-
 --Clients
 INSERT INTO deal.client (client_id, last_name, first_name, middle_name, birth_date, email, gender, marital_status,
                          dependent_amount, passport_id, employment_id, account_number)
@@ -111,3 +74,38 @@ VALUES ('cc111111-1111-1111-1111-111111111111', 500000, 12, 56098.40, 26.0, 6731
          "remainingDebt": 463585.38
        }', true, 'CALCULATED');
 
+--Statements
+INSERT INTO deal.statement (statement_id, client_id, creation_date, credit_id, status, status_history, applied_offer, sign_date)
+VALUES ('aa111111-1111-1111-1111-111111111111', 'bb111111-1111-1111-1111-111111111111', '2025-06-24', 'cc111111-1111-1111-1111-111111111111',
+        'PREAPPROVAL', '[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]', '{
+    "rate": 26.0,
+    "term": 12,
+    "statementId": "aa111111-1111-1111-1111-111111111111",
+    "totalAmount": 673180.79,
+    "salaryClient": true,
+    "monthlyPayment": 56098.40,
+    "requestedAmount": 500000,
+    "insuranceEnabled": true
+  }', null),
+       ('aa222222-2222-2222-2222-222222222222', 'bb222222-2222-2222-2222-222222222222', '2025-06-24', 'cc222222-2222-2222-2222-222222222222',
+        'PREAPPROVAL', '[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]', '{
+         "rate": 27.0,
+         "term": 12,
+         "statementId": "aa222222-2222-2222-2222-222222222222",
+         "totalAmount": 676104.37,
+         "salaryClient": false,
+         "monthlyPayment": 56342.03,
+         "requestedAmount": 500000,
+         "insuranceEnabled": true
+       }', null),
+       ('aa333333-3333-3333-3333-333333333333', 'bb333333-3333-3333-3333-333333333333', '2025-06-24', 'cc333333-3333-3333-3333-333333333333',
+        'PREAPPROVAL', '[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]', '{
+         "rate": 29.0,
+         "term": 12,
+         "statementId": "aa333333-3333-3333-3333-333333333333",
+         "totalAmount": 581975.39,
+         "salaryClient": true,
+         "monthlyPayment": 48497.95,
+         "requestedAmount": 500000,
+         "insuranceEnabled": false
+       }', null);

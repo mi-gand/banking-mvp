@@ -57,6 +57,7 @@
             <column name="applied_offer" type="jsonb"/>
             <column name="sign_date" type="DATE"/>
             <column name="status_history" type="jsonb"/>
+            <column name="ses_code" type="VARCHAR(32)"/>
         </createTable>
     </changeSet>
 
@@ -102,6 +103,7 @@
             <column name="status_history" value='[{"time":"2025-06-24T00:00:00","status":"PREAPPROVAL","changeType":"AUTOMATIC"}]'/>
             <column name="applied_offer" value='{"rate": 26.0, "term": 12, "statementId": "aa111111-1111-1111-1111-111111111111", "totalAmount": 673180.79, "salaryClient": true, "monthlyPayment": 56098.40, "requestedAmount": 500000, "insuranceEnabled": true}'/>
             <column name="sign_date" value="2025-06-25"/>
+            <column name="ses_code" value="1234"/>
         </insert>
     </changeSet>
 
