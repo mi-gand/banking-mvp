@@ -24,7 +24,7 @@ jobs:
           mvn -pl report jacoco:report-aggregate -B
 
       - name: Upload coverage to codecov
-        uses: actions/upload-artifact@v4
+        uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           files: report/target/site/jacoco/jacoco.xml
